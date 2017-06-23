@@ -237,8 +237,8 @@
         var geometry = new THREE.Geometry();
 
         const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]) + gatewayOutlineWidth, parseFloat(data.position.split(' ')[1]) + gatewayOutlineWidth);
-        const width = 6;
-        const height = 6;
+        const width = parseFloat(data.width) - 2 * gatewayOutlineWidth;
+        const height = parseFloat(data.height) - 2 * gatewayOutlineWidth;
 
         geometry.vertices = [
           new THREE.Vector3(pos.y, 0, -pos.x - width / 2),
@@ -270,8 +270,8 @@
 
         const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]), parseFloat(data.position.split(' ')[1]));
 
-        const width = 6 + 2 * gatewayOutlineWidth;
-        const height = 6 + 2 * gatewayOutlineWidth;
+        const width = parseFloat(data.width);
+        const height = parseFloat(data.height);
 
         geometry.vertices = [
           new THREE.Vector3(pos.y, -0.005, -pos.x - width / 2),
@@ -380,7 +380,7 @@
 
       const flow = document.createElement('a-entity');
       flow.setAttribute('geometry', 'primitive: sequenceFlow; points:' + points + ';');
-      flow.setAttribute('material', 'color: #FFFFFF');
+      flow.setAttribute('material', 'color: #FFFFFF; side: double;');
 
       const line = document.createElement('a-entity');
       line.setAttribute('geometry', 'primitive: sequenceFlowLine; points:' + points + ';');
@@ -414,6 +414,26 @@
       scene.appendChild(line);
     }
 
+    function handleGateway(scene, element) {
+      /*  <a-entity geometry="primitive: gateway; position: 8 3;" material="color: #FFFFFF;"></a-entity>
+          <a-entity geometry="primitive: gatewayLine; position: 8 3;" material="color: #333333"></a-entity>
+      */
+
+      console.log('got gateway', element);
+      const posOffset = element.width / 2 * globalScaleFactor;
+
+      const gateway = document.createElement('a-entity');
+      gateway.setAttribute('geometry', 'primitive: gateway; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
+      gateway.setAttribute('material', 'color: #FFFFFF');
+
+      const line = document.createElement('a-entity');
+      line.setAttribute('geometry', 'primitive: gatewayLine; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
+      line.setAttribute('material', 'color: #333333');
+
+      scene.appendChild(gateway);
+      scene.appendChild(line);
+    }
+
     function handleTask(scene, element) {
       /* <a-entity geometry="primitive: task; position: 10 15; width: 10; height: 10;" material="color: #FFFFFF"></a-entity>
          <a-entity geometry="primitive: taskLine; position: 10 15; width: 10; height: 10;" material="color: #333333"></a-entity>
@@ -434,6 +454,19 @@
       label.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 0.005 ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor));
       // <a-entity text="value: Hello world; color: black; width: 10;" rotation="-90 0 0"></a-entity>
 
+      // human for usertasks
+      if(element.businessObject.$instanceOf('bpmn:UserTask')) {
+        //<a-entity obj-model="obj: #human-obj;" scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        console.log('found a usertask', element);
+        const model = document.createElement('a-entity');
+        model.setAttribute('obj-model', 'obj: #human-obj;');
+        model.setAttribute('scale', '0.2 0.2 0.2');
+        model.setAttribute('rotation', '0 90 0');
+        model.setAttribute('position', (element.y * globalScaleFactor + element.height / 10 * globalScaleFactor) + ' 0.005 ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 10))
+
+        scene.appendChild(model);
+      }
+
       scene.appendChild(task);
       scene.appendChild(line);
       scene.appendChild(label);
@@ -446,6 +479,17 @@
       const sky = document.createElement('a-sky');
       sky.setAttribute('color', '#ECECEC');
       scene.appendChild(sky);
+
+      /*    <a-assets>
+              <a-asset-item id="human-obj" src="/human.obj"></a-asset-item>
+            </a-assets>
+      */
+      const assets = document.createElement('a-assets');
+      const humanObj = document.createElement('a-asset-item');
+      humanObj.setAttribute('id', 'human-obj');
+      humanObj.setAttribute('src', '/human.obj');
+      assets.appendChild(humanObj);
+      scene.appendChild(assets);
 
       let startPosition;
 
@@ -472,6 +516,10 @@
             startPosition = element;
           }
         }
+
+        if(bo.$instanceOf('bpmn:Gateway')) {
+          handleGateway(scene, element);
+        }
       });
 
       // <a-entity camera="userHeight: 1.6" look-controls></a-entity>
@@ -479,7 +527,7 @@
       const camera = document.createElement('a-entity');
       camera.setAttribute('camera', 'userHeight: 1.6');
       camera.setAttribute('look-controls', true);
-      camera.setAttribute('wasd-controls', 'acceleration: 300');
+      camera.setAttribute('wasd-controls', 'acceleration: 250');
       camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
       scene.appendChild(camera);
 
@@ -494,6 +542,9 @@
     </div>
 
     <!-- <a-scene>
+      <a-assets>
+        <a-asset-item id="human-obj" src="/human.obj"></a-asset-item>
+      </a-assets>
       <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
       <a-entity geometry="primitive: sequenceFlowLine; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #333333"></a-entity>
 
@@ -503,8 +554,7 @@
       <a-entity geometry="primitive: circle; radius: 2;" rotation="-90 0 0" material="color: #FFFFFF" position="5 0 -5"></a-entity>
       <a-entity geometry="primitive: circle; radius: 2.3;" rotation="-90 0 0" material="color: #333333;" position="5 -0.005 -5"></a-entity>
 
-      <a-entity geometry="primitive: gateway; position: 8 3;" material="color: #FFFFFF;"></a-entity>
-      <a-entity geometry="primitive: gatewayLine; position: 8 3;" material="color: #333333"></a-entity>
+      <a-entity obj-model="obj: #human-obj;" scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
 
       <a-sky color="#ECECEC"></a-sky>
     </a-scene> -->
