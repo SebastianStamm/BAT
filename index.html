@@ -12,7 +12,7 @@
     const taskOutlineWidth = 0.5;
     const gatewayOutlineWidth = 0.5;
     const eventOulineWidth = 0.3;
-    const globalScaleFactor = 0.12;
+    const globalScaleFactor = 0.17;
 
     function getVectorNormal(vec) {
       const normal = new THREE.Vector2(vec.x, vec.y);
@@ -436,10 +436,9 @@
       // <a-sky color="#ECECEC"></a-sky>
       const sky = document.createElement('a-sky');
       sky.setAttribute('color', '#ECECEC');
-
       scene.appendChild(sky);
 
-      window.viewer = viewer;
+      let startPosition;
 
       const data = [];
       const elementRegistry = viewer.get('elementRegistry');
@@ -461,8 +460,20 @@
 
         if(bo.$instanceOf('bpmn:Event')) {
           handleEvent(scene, element);
+          if(bo.$instanceOf('bpmn:StartEvent')) {
+            startPosition = element;
+          }
         }
       });
+
+      // <a-entity camera="userHeight: 1.6" look-controls></a-entity>
+      const posOffset = startPosition.width / 2 * globalScaleFactor;
+      const camera = document.createElement('a-entity');
+      camera.setAttribute('camera', 'userHeight: 1.6');
+      camera.setAttribute('look-controls', true);
+      camera.setAttribute('wasd-controls', 'acceleration: 300');
+      camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
+      scene.appendChild(camera);
 
       document.body.appendChild(scene);
     }
