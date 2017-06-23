@@ -1,6 +1,7 @@
 <html>
   <head>
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   </head>
   <body>
     <script type="application/javascript">
@@ -337,10 +338,37 @@
       }
     });
 
+    function loadBpmn() {
+      const input = document.createElement('input');
+
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', '.bpmn');
+
+      input.addEventListener('change', evt => {
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener('load', e => {
+          // resolve(e.target.result);
+          console.log('file content', e.target.result);
+        });
+
+        reader.readAsText(file);
+      });
+
+      input.click();
+
+    }
 
     </script>
 
-    <a-scene>
+    <div style="position:absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000">
+      <div style="color: white; text-align: center; font-size: 30em; cursor: pointer;" onClick="loadBpmn()">🦇</div>
+      <div style="color: white; text-align: center; font-size: 8em; font-family: 'Roboto', sans-serif;">BAT</div>
+    </div>
+
+
+    <!-- <a-scene>
       <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
       <a-entity geometry="primitive: sequenceFlowLine; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #333333"></a-entity>
 
@@ -354,7 +382,7 @@
       <a-entity geometry="primitive: gatewayLine; position: 8 3;" material="color: #333333"></a-entity>
 
       <a-sky color="#ECECEC"></a-sky>
-    </a-scene>
+    </a-scene> -->
 
   </body>
 </html>
