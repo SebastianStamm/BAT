@@ -1,0 +1,206 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <script type="application/javascript">
+
+    function getVectorNormal(vec) {
+      const normal = new THREE.Vector2(vec.x, vec.y);
+
+      normal.rotateAround(new THREE.Vector2(0, 0), Math.PI / 2);
+      normal.normalize();
+
+      return normal;
+    }
+
+    function getAngleBetweenVectors(vec1, vec2) {
+      const a = new THREE.Vector2(vec1.x, vec1.y);
+      a.normalize();
+
+      const b = new THREE.Vector2(vec2.x, vec2.y);
+      b.normalize();
+      b.negate();
+
+      const angle = Math.atan2(b.y, b.x) - Math.atan2(a.y, a.x);
+
+      return angle;
+    }
+
+
+    //
+    // AFRAME.registerGeometry('hallway', {
+    //   schema: {
+    //     start: {
+    //       default: [3, 2]
+    //     },
+    //     end: {
+    //       default: [5, 5]
+    //     }
+    //   },
+    //
+    //   init: function (data) {
+    //     var geometry = new THREE.Geometry();
+    //     // geometry.vertices = data.vertices.map(function (vertex) {
+    //     //     var points = vertex.split(' ').map(function(x){return parseInt(x);});
+    //     //     return new THREE.Vector3(points[0], points[1], points[2]);
+    //     // });
+    //     const normal = new THREE.Vector2(parseInt(data.end[0]) - parseInt(data.start[0]), parseInt(data.end[1]) - parseInt(data.start[1]));
+    //     normal.rotateAround(new THREE.Vector2(0, 0), Math.PI / 2);
+    //     normal.normalize();
+    //
+    //     geometry.vertices = [
+    //       new THREE.Vector3(parseInt(data.start[1]) + normal.y, 0, -parseInt(data.start[0]) - normal.x),
+    //       new THREE.Vector3(parseInt(data.start[1]) - normal.y, 0, -parseInt(data.start[0]) + normal.x),
+    //       new THREE.Vector3(parseInt(data.end[1]) + normal.y, 0, -parseInt(data.end[0]) - normal.x),
+    //       new THREE.Vector3(parseInt(data.end[1]) - normal.y, 0, -parseInt(data.end[0]) + normal.x),
+    //       new THREE.Vector3(parseInt(data.start[1]) + normal.y, 2.5, -parseInt(data.start[0]) - normal.x),
+    //       new THREE.Vector3(parseInt(data.start[1]) - normal.y, 2.5, -parseInt(data.start[0]) + normal.x),
+    //       new THREE.Vector3(parseInt(data.end[1]) + normal.y, 2.5, -parseInt(data.end[0]) - normal.x),
+    //       new THREE.Vector3(parseInt(data.end[1]) - normal.y, 2.5, -parseInt(data.end[0]) + normal.x)
+    //     ];
+    //
+    //     console.log('vertices', geometry.vertices);
+    //
+    //     geometry.computeBoundingBox();
+    //     geometry.faces.push(
+    //       new THREE.Face3(0, 2, 1), new THREE.Face3(1, 2, 3),
+    //       new THREE.Face3(4, 5, 6), new THREE.Face3(5, 7, 6),
+    //
+    //     );
+    //     // geometry.mergeVertices();
+    //     geometry.computeFaceNormals();
+    //     geometry.computeVertexNormals();
+    //     this.geometry = geometry;
+    //
+    //     console.log(this);
+    //   }
+    // });
+
+    AFRAME.registerGeometry('sequenceFlow', {
+      schema: {
+        points: {
+          default: ['0 0', '10 10']
+        }
+      },
+
+      init: function (data) {
+        var geometry = new THREE.Geometry();
+
+        const waypoints = data.points.map(point => {
+          return point.split(' ').map(coordinate => parseInt(coordinate));
+        }).map(coordinate => {
+          return new THREE.Vector2(coordinate[0], coordinate[1]);
+        });
+
+        console.log('waypoints', waypoints);
+
+        const mappedWaypoints = waypoints.map((waypoint, idx) => {
+          const previousWaypoint = waypoints[idx - 1];
+          const nextWaypoint = waypoints[idx + 1];
+
+          if(!previousWaypoint) {
+            // first waypoint, take the normal
+            const movingVector = nextWaypoint.clone().sub(waypoint);
+            const normal = getVectorNormal(movingVector);
+            return [
+              waypoint.clone().add(normal),
+              waypoint.clone().sub(normal)
+            ];
+          } else {
+            if(nextWaypoint) {
+              // middle point, take the half angle
+              const vec1 = waypoint.clone().sub(previousWaypoint);
+              const vec2 = nextWaypoint.clone().sub(waypoint);
+
+              const angle = getAngleBetweenVectors(vec1, vec2);
+              const halfAngle = angle / 2;
+
+              const normal = vec2.clone().rotateAround(new THREE.Vector2(0, 0), -halfAngle);
+              normal.normalize();
+
+              return [
+                waypoint.clone().add(normal),
+                waypoint.clone().sub(normal)
+              ];
+            } else {
+              // last waypoint, take the normal
+              const movingVector = waypoint.clone().sub(previousWaypoint);
+              const normal = getVectorNormal(movingVector);
+
+              return [
+                waypoint.clone().add(normal),
+                waypoint.clone().sub(normal)
+              ];
+            }
+          }
+        });
+
+        console.log('mapped waypoints',mappedWaypoints);
+
+        geometry.vertices = [];
+        geometry.faces = [];
+
+        mappedWaypoints.forEach((waypoint, idx) => {
+          geometry.vertices.push(
+            new THREE.Vector3(waypoint[0].y, 0, -waypoint[0].x),
+            new THREE.Vector3(waypoint[1].y, 0, -waypoint[1].x)
+          );
+
+          if(idx > 0) {
+            const faceIndexOffset = (idx - 1) * 2;
+            geometry.faces.push(new THREE.Face3(0 + faceIndexOffset, 2 + faceIndexOffset, 1 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 2 + faceIndexOffset, 3 + faceIndexOffset));
+          }
+        });
+
+        // geometry.vertices = data.vertices.map(function (vertex) {
+        //     var points = vertex.split(' ').map(function(x){return parseInt(x);});
+        //     return new THREE.Vector3(points[0], points[1], points[2]);
+        // });
+        // const normal = new THREE.Vector2(parseInt(data.end[0]) - parseInt(data.start[0]), parseInt(data.end[1]) - parseInt(data.start[1]));
+        // normal.rotateAround(new THREE.Vector2(0, 0), Math.PI / 2);
+        // normal.normalize();
+        //
+        // geometry.vertices = [
+        //   new THREE.Vector3(parseInt(data.start[1]) + normal.y, 0, -parseInt(data.start[0]) - normal.x),
+        //   new THREE.Vector3(parseInt(data.start[1]) - normal.y, 0, -parseInt(data.start[0]) + normal.x),
+        //   new THREE.Vector3(parseInt(data.end[1]) + normal.y, 0, -parseInt(data.end[0]) - normal.x),
+        //   new THREE.Vector3(parseInt(data.end[1]) - normal.y, 0, -parseInt(data.end[0]) + normal.x),
+        //   new THREE.Vector3(parseInt(data.start[1]) + normal.y, 2.5, -parseInt(data.start[0]) - normal.x),
+        //   new THREE.Vector3(parseInt(data.start[1]) - normal.y, 2.5, -parseInt(data.start[0]) + normal.x),
+        //   new THREE.Vector3(parseInt(data.end[1]) + normal.y, 2.5, -parseInt(data.end[0]) - normal.x),
+        //   new THREE.Vector3(parseInt(data.end[1]) - normal.y, 2.5, -parseInt(data.end[0]) + normal.x)
+        // ];
+        //
+        // console.log('vertices', geometry.vertices);
+        //
+        // geometry.computeBoundingBox();
+        // geometry.faces.push(
+        //   new THREE.Face3(0, 2, 1), new THREE.Face3(1, 2, 3),
+        //   new THREE.Face3(4, 5, 6), new THREE.Face3(5, 7, 6),
+        //
+        // );
+        // // geometry.mergeVertices();
+        geometry.computeFaceNormals();
+        geometry.computeVertexNormals();
+        this.geometry = geometry;
+        //
+        // console.log(this);
+      }
+    });
+
+    </script>
+
+    <a-scene>
+      <!-- <a-entity geometry="primitive: hallway; start: 2, 2; end: 0, 6;" material="color: #FFFFFF"></a-entity>
+      <a-entity geometry="primitive: hallway; start: 0, 0; end: 8, 3;" material="color: #FFFFFF"></a-entity>
+      <a-entity geometry="primitive: hallway; start: 7, 1; end: 16, 9;" material="color: #FFFFFF"></a-entity> -->
+
+      <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
+
+      <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+
+  </body>
+</html>
