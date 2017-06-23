@@ -7,6 +7,7 @@
 
     const sequenceFlowWidth = 1.5;
     const sequenceFlowHeight = 3.5;
+    const taskOutlineWidth = 0.5;
 
     function getVectorNormal(vec) {
       const normal = new THREE.Vector2(vec.x, vec.y);
@@ -181,15 +182,105 @@
       }
     });
 
+
+    AFRAME.registerGeometry('task', {
+      schema: {
+        position: {
+          default: '0 0'
+        },
+        width: {
+          default: '10'
+        },
+        height: {
+          default: '10'
+        }
+      },
+
+      init: function (data) {
+        var geometry = new THREE.Geometry();
+
+        const pos = new THREE.Vector2(parseInt(data.position.split(' ')[0]) + taskOutlineWidth, parseInt(data.position.split(' ')[1]) + taskOutlineWidth);
+        const width = parseInt(data.width) - taskOutlineWidth * 2;
+        const height = parseInt(data.height) - taskOutlineWidth * 2;
+
+        geometry.vertices = [
+          new THREE.Vector3(pos.y, 0, -pos.x),
+          new THREE.Vector3(pos.y + height, 0, -pos.x),
+          new THREE.Vector3(pos.y + height, 0, -pos.x - width),
+          new THREE.Vector3(pos.y, 0, -pos.x - width)
+        ];
+
+        geometry.faces = [
+          new THREE.Face3(0, 1, 2),
+          new THREE.Face3(2, 3, 0)
+        ];
+
+        geometry.computeFaceNormals();
+        geometry.computeVertexNormals();
+        this.geometry = geometry;
+      }
+    });
+
+    AFRAME.registerGeometry('taskLine', {
+      schema: {
+        position: {
+          default: '0 0'
+        },
+        width: {
+          default: '10'
+        },
+        height: {
+          default: '10'
+        }
+      },
+
+      init: function (data) {
+        var geometry = new THREE.Geometry();
+
+        const pos = new THREE.Vector2(parseInt(data.position.split(' ')[0]), parseInt(data.position.split(' ')[1]));
+        const width = parseInt(data.width);
+        const height = parseInt(data.height);
+
+        geometry.vertices = [
+          new THREE.Vector3(pos.y, 0, -pos.x),
+          new THREE.Vector3(pos.y + height, 0, -pos.x),
+          new THREE.Vector3(pos.y + height, 0, -pos.x - width),
+          new THREE.Vector3(pos.y, 0, -pos.x - width),
+          new THREE.Vector3(pos.y + taskOutlineWidth, 0, -pos.x - taskOutlineWidth),
+          new THREE.Vector3(pos.y + height - taskOutlineWidth, 0, -pos.x - taskOutlineWidth),
+          new THREE.Vector3(pos.y + height - taskOutlineWidth, 0, -pos.x - width + taskOutlineWidth),
+          new THREE.Vector3(pos.y + taskOutlineWidth, 0, -pos.x - width + taskOutlineWidth)
+        ];
+
+        geometry.faces = [
+          new THREE.Face3(0, 1, 5),
+          new THREE.Face3(0, 5, 4),
+          new THREE.Face3(1, 2, 5),
+          new THREE.Face3(5, 2, 6),
+          new THREE.Face3(6, 2, 3),
+          new THREE.Face3(7, 6, 3),
+          new THREE.Face3(4, 7, 3),
+          new THREE.Face3(0, 4, 3)
+        ];
+
+        geometry.computeFaceNormals();
+        geometry.computeVertexNormals();
+        this.geometry = geometry;
+      }
+    });
+
+
     </script>
 
     <a-scene>
-      <!-- <a-entity geometry="primitive: hallway; start: 2, 2; end: 0, 6;" material="color: #FFFFFF"></a-entity>
-      <a-entity geometry="primitive: hallway; start: 0, 0; end: 8, 3;" material="color: #FFFFFF"></a-entity>
-      <a-entity geometry="primitive: hallway; start: 7, 1; end: 16, 9;" material="color: #FFFFFF"></a-entity> -->
-
       <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
       <a-entity geometry="primitive: sequenceFlowLine; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #333333"></a-entity>
+
+      <a-entity geometry="primitive: task; position: 10 15; width: 10; height: 10;" material="color: #FFFFFF"></a-entity>
+      <a-entity geometry="primitive: taskLine; position: 10 15; width: 10; height: 10;" material="color: #333333"></a-entity>
+
+      <a-entity geometry="primitive: circle; radius: 2.3;" rotation="-90 0 0" material="color: #000000;" position="5 -0.005 -5"></a-entity>
+      <a-entity geometry="primitive: circle; radius: 2;" rotation="-90 0 0" material="color: #FFFFFF" position="5 0 -5"></a-entity>
 
       <a-sky color="#ECECEC"></a-sky>
     </a-scene>
