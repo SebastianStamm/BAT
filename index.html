@@ -5,11 +5,16 @@
   <body>
     <script type="application/javascript">
 
+    const sequenceFlowWidth = 1.5;
+    const sequenceFlowHeight = 3.5;
+
     function getVectorNormal(vec) {
       const normal = new THREE.Vector2(vec.x, vec.y);
 
       normal.rotateAround(new THREE.Vector2(0, 0), Math.PI / 2);
       normal.normalize();
+
+      normal.multiplyScalar(sequenceFlowWidth);
 
       return normal;
     }
@@ -27,55 +32,59 @@
       return angle;
     }
 
+    function calculateWaypoints(waypoints) {
+      return waypoints.map((waypoint, idx) => {
+        const previousWaypoint = waypoints[idx - 1];
+        const nextWaypoint = waypoints[idx + 1];
 
-    //
-    // AFRAME.registerGeometry('hallway', {
-    //   schema: {
-    //     start: {
-    //       default: [3, 2]
-    //     },
-    //     end: {
-    //       default: [5, 5]
-    //     }
-    //   },
-    //
-    //   init: function (data) {
-    //     var geometry = new THREE.Geometry();
-    //     // geometry.vertices = data.vertices.map(function (vertex) {
-    //     //     var points = vertex.split(' ').map(function(x){return parseInt(x);});
-    //     //     return new THREE.Vector3(points[0], points[1], points[2]);
-    //     // });
-    //     const normal = new THREE.Vector2(parseInt(data.end[0]) - parseInt(data.start[0]), parseInt(data.end[1]) - parseInt(data.start[1]));
-    //     normal.rotateAround(new THREE.Vector2(0, 0), Math.PI / 2);
-    //     normal.normalize();
-    //
-    //     geometry.vertices = [
-    //       new THREE.Vector3(parseInt(data.start[1]) + normal.y, 0, -parseInt(data.start[0]) - normal.x),
-    //       new THREE.Vector3(parseInt(data.start[1]) - normal.y, 0, -parseInt(data.start[0]) + normal.x),
-    //       new THREE.Vector3(parseInt(data.end[1]) + normal.y, 0, -parseInt(data.end[0]) - normal.x),
-    //       new THREE.Vector3(parseInt(data.end[1]) - normal.y, 0, -parseInt(data.end[0]) + normal.x),
-    //       new THREE.Vector3(parseInt(data.start[1]) + normal.y, 2.5, -parseInt(data.start[0]) - normal.x),
-    //       new THREE.Vector3(parseInt(data.start[1]) - normal.y, 2.5, -parseInt(data.start[0]) + normal.x),
-    //       new THREE.Vector3(parseInt(data.end[1]) + normal.y, 2.5, -parseInt(data.end[0]) - normal.x),
-    //       new THREE.Vector3(parseInt(data.end[1]) - normal.y, 2.5, -parseInt(data.end[0]) + normal.x)
-    //     ];
-    //
-    //     console.log('vertices', geometry.vertices);
-    //
-    //     geometry.computeBoundingBox();
-    //     geometry.faces.push(
-    //       new THREE.Face3(0, 2, 1), new THREE.Face3(1, 2, 3),
-    //       new THREE.Face3(4, 5, 6), new THREE.Face3(5, 7, 6),
-    //
-    //     );
-    //     // geometry.mergeVertices();
-    //     geometry.computeFaceNormals();
-    //     geometry.computeVertexNormals();
-    //     this.geometry = geometry;
-    //
-    //     console.log(this);
-    //   }
-    // });
+        if(!previousWaypoint) {
+          // first waypoint, take the normal
+          const movingVector = nextWaypoint.clone().sub(waypoint);
+          const normal = getVectorNormal(movingVector);
+          const shortNormal = normal.clone().multiplyScalar(.8);
+          return [
+            waypoint.clone().add(normal),
+            waypoint.clone().sub(normal),
+            waypoint.clone().add(shortNormal),
+            waypoint.clone().sub(shortNormal)
+          ];
+        } else {
+          if(nextWaypoint) {
+            // middle point, take the half angle
+            const vec1 = waypoint.clone().sub(previousWaypoint);
+            const vec2 = nextWaypoint.clone().sub(waypoint);
+
+            const angle = getAngleBetweenVectors(vec1, vec2);
+            const halfAngle = angle / 2;
+
+            const normal = vec2.clone().rotateAround(new THREE.Vector2(0, 0), -halfAngle);
+            normal.normalize();
+            normal.multiplyScalar(sequenceFlowWidth);
+
+            const shortNormal = normal.clone().multiplyScalar(.8);
+
+            return [
+              waypoint.clone().add(normal),
+              waypoint.clone().sub(normal),
+              waypoint.clone().add(shortNormal),
+              waypoint.clone().sub(shortNormal)
+            ];
+          } else {
+            // last waypoint, take the normal
+            const movingVector = waypoint.clone().sub(previousWaypoint);
+            const normal = getVectorNormal(movingVector);
+            const shortNormal = normal.clone().multiplyScalar(.8);
+
+            return [
+              waypoint.clone().add(normal),
+              waypoint.clone().sub(normal),
+              waypoint.clone().add(shortNormal),
+              waypoint.clone().sub(shortNormal)
+            ];
+          }
+        }
+      });
+    }
 
     AFRAME.registerGeometry('sequenceFlow', {
       schema: {
@@ -93,59 +102,7 @@
           return new THREE.Vector2(coordinate[0], coordinate[1]);
         });
 
-        console.log('waypoints', waypoints);
-
-        const mappedWaypoints = waypoints.map((waypoint, idx) => {
-          const previousWaypoint = waypoints[idx - 1];
-          const nextWaypoint = waypoints[idx + 1];
-
-          if(!previousWaypoint) {
-            // first waypoint, take the normal
-            const movingVector = nextWaypoint.clone().sub(waypoint);
-            const normal = getVectorNormal(movingVector);
-            const shortNormal = normal.clone().multiplyScalar(.8);
-            return [
-              waypoint.clone().add(normal),
-              waypoint.clone().sub(normal),
-              waypoint.clone().add(shortNormal),
-              waypoint.clone().sub(shortNormal)
-            ];
-          } else {
-            if(nextWaypoint) {
-              // middle point, take the half angle
-              const vec1 = waypoint.clone().sub(previousWaypoint);
-              const vec2 = nextWaypoint.clone().sub(waypoint);
-
-              const angle = getAngleBetweenVectors(vec1, vec2);
-              const halfAngle = angle / 2;
-
-              const normal = vec2.clone().rotateAround(new THREE.Vector2(0, 0), -halfAngle);
-              normal.normalize();
-              const shortNormal = normal.clone().multiplyScalar(.8);
-
-              return [
-                waypoint.clone().add(normal),
-                waypoint.clone().sub(normal),
-                waypoint.clone().add(shortNormal),
-                waypoint.clone().sub(shortNormal)
-              ];
-            } else {
-              // last waypoint, take the normal
-              const movingVector = waypoint.clone().sub(previousWaypoint);
-              const normal = getVectorNormal(movingVector);
-              const shortNormal = normal.clone().multiplyScalar(.8);
-
-              return [
-                waypoint.clone().add(normal),
-                waypoint.clone().sub(normal),
-                waypoint.clone().add(shortNormal),
-                waypoint.clone().sub(shortNormal)
-              ];
-            }
-          }
-        });
-
-        console.log('mapped waypoints',mappedWaypoints);
+        const mappedWaypoints = calculateWaypoints(waypoints);
 
         geometry.vertices = [];
         geometry.faces = [];
@@ -154,8 +111,8 @@
           geometry.vertices.push(
             new THREE.Vector3(waypoint[0].y, 0, -waypoint[0].x),
             new THREE.Vector3(waypoint[1].y, 0, -waypoint[1].x),
-            new THREE.Vector3(waypoint[0].y, 2.5, -waypoint[0].x),
-            new THREE.Vector3(waypoint[1].y, 2.5, -waypoint[1].x),
+            new THREE.Vector3(waypoint[0].y, sequenceFlowHeight, -waypoint[0].x),
+            new THREE.Vector3(waypoint[1].y, sequenceFlowHeight, -waypoint[1].x),
             new THREE.Vector3(waypoint[2].y, 0, -waypoint[2].x),
             new THREE.Vector3(waypoint[3].y, 0, -waypoint[3].x),
           );
@@ -179,6 +136,51 @@
       }
     });
 
+
+    AFRAME.registerGeometry('sequenceFlowLine', {
+      schema: {
+        points: {
+          default: ['0 0', '10 10']
+        }
+      },
+
+      init: function (data) {
+        var geometry = new THREE.Geometry();
+
+        const waypoints = data.points.map(point => {
+          return point.split(' ').map(coordinate => parseInt(coordinate));
+        }).map(coordinate => {
+          return new THREE.Vector2(coordinate[0], coordinate[1]);
+        });
+
+        const mappedWaypoints = calculateWaypoints(waypoints);
+
+        geometry.vertices = [];
+        geometry.faces = [];
+
+        mappedWaypoints.forEach((waypoint, idx) => {
+          geometry.vertices.push(
+            new THREE.Vector3(waypoint[0].y, 0, -waypoint[0].x),
+            new THREE.Vector3(waypoint[1].y, 0, -waypoint[1].x),
+            new THREE.Vector3(waypoint[2].y, 0, -waypoint[2].x),
+            new THREE.Vector3(waypoint[3].y, 0, -waypoint[3].x),
+          );
+
+          if(idx > 0) {
+            const faceIndexOffset = (idx - 1) * 4;
+            geometry.faces.push(new THREE.Face3(0 + faceIndexOffset, 4 + faceIndexOffset, 2 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 4 + faceIndexOffset, 6 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 7 + faceIndexOffset, 1 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 7 + faceIndexOffset, 5 + faceIndexOffset));
+          }
+        });
+
+        geometry.computeFaceNormals();
+        geometry.computeVertexNormals();
+        this.geometry = geometry;
+      }
+    });
+
     </script>
 
     <a-scene>
@@ -187,6 +189,7 @@
       <a-entity geometry="primitive: hallway; start: 7, 1; end: 16, 9;" material="color: #FFFFFF"></a-entity> -->
 
       <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
+      <a-entity geometry="primitive: sequenceFlowLine; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #333333"></a-entity>
 
       <a-sky color="#ECECEC"></a-sky>
     </a-scene>
