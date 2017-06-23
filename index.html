@@ -501,12 +501,12 @@
 
       const humanObj = document.createElement('a-asset-item');
       humanObj.setAttribute('id', 'human-obj');
-      humanObj.setAttribute('src', '/human.obj');
+      humanObj.setAttribute('src', './human.obj');
       assets.appendChild(humanObj);
 
       const computerObj = document.createElement('a-asset-item');
       computerObj.setAttribute('id', 'computer-obj');
-      computerObj.setAttribute('src', '/computer.obj');
+      computerObj.setAttribute('src', './computer.obj');
       assets.appendChild(computerObj);
 
       scene.appendChild(assets);
@@ -557,8 +557,8 @@
     </script>
 
     <div style="position:absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000" id="splash">
-      <div style="color: white; text-align: center; font-size: 30em; cursor: pointer;" onClick="loadBpmn()">🦇</div>
-      <div style="color: white; text-align: center; font-size: 8em; font-family: 'Roboto', sans-serif;">BAT</div>
+      <div style="color: #c6caff; text-align: center; font-size: 30em; cursor: pointer;" onClick="loadBpmn()">🦇</div>
+      <div style="color: #c6caff; text-align: center; font-size: 8em; font-family: 'Roboto', sans-serif;">BAT</div>
     </div>
 
     <!-- <a-scene>
