@@ -426,8 +426,17 @@
       line.setAttribute('geometry', 'primitive: taskLine; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
       line.setAttribute('material', 'color: #333333');
 
+      // text label look-controls
+      const name = element.businessObject.name;
+      const label = document.createElement('a-entity');
+      label.setAttribute('rotation', '-90 90 0');
+      label.setAttribute('text', 'value: ' + name + '; color: black; width: ' + element.width * globalScaleFactor + ';');
+      label.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 0.005 ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor));
+      // <a-entity text="value: Hello world; color: black; width: 10;" rotation="-90 0 0"></a-entity>
+
       scene.appendChild(task);
       scene.appendChild(line);
+      scene.appendChild(label);
     }
 
     function handleModel(viewer) {
@@ -444,7 +453,6 @@
       const elementRegistry = viewer.get('elementRegistry');
 
       elementRegistry.forEach(element => {
-        console.log('element', element);
         const bo = element.businessObject;
         if(element.type === 'label') {
           return;
