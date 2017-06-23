@@ -103,9 +103,12 @@
             // first waypoint, take the normal
             const movingVector = nextWaypoint.clone().sub(waypoint);
             const normal = getVectorNormal(movingVector);
+            const shortNormal = normal.clone().multiplyScalar(.8);
             return [
               waypoint.clone().add(normal),
-              waypoint.clone().sub(normal)
+              waypoint.clone().sub(normal),
+              waypoint.clone().add(shortNormal),
+              waypoint.clone().sub(shortNormal)
             ];
           } else {
             if(nextWaypoint) {
@@ -118,19 +121,25 @@
 
               const normal = vec2.clone().rotateAround(new THREE.Vector2(0, 0), -halfAngle);
               normal.normalize();
+              const shortNormal = normal.clone().multiplyScalar(.8);
 
               return [
                 waypoint.clone().add(normal),
-                waypoint.clone().sub(normal)
+                waypoint.clone().sub(normal),
+                waypoint.clone().add(shortNormal),
+                waypoint.clone().sub(shortNormal)
               ];
             } else {
               // last waypoint, take the normal
               const movingVector = waypoint.clone().sub(previousWaypoint);
               const normal = getVectorNormal(movingVector);
+              const shortNormal = normal.clone().multiplyScalar(.8);
 
               return [
                 waypoint.clone().add(normal),
-                waypoint.clone().sub(normal)
+                waypoint.clone().sub(normal),
+                waypoint.clone().add(shortNormal),
+                waypoint.clone().sub(shortNormal)
               ];
             }
           }
@@ -146,57 +155,27 @@
             new THREE.Vector3(waypoint[0].y, 0, -waypoint[0].x),
             new THREE.Vector3(waypoint[1].y, 0, -waypoint[1].x),
             new THREE.Vector3(waypoint[0].y, 2.5, -waypoint[0].x),
-            new THREE.Vector3(waypoint[1].y, 2.5, -waypoint[1].x)
+            new THREE.Vector3(waypoint[1].y, 2.5, -waypoint[1].x),
+            new THREE.Vector3(waypoint[2].y, 0, -waypoint[2].x),
+            new THREE.Vector3(waypoint[3].y, 0, -waypoint[3].x),
           );
 
           if(idx > 0) {
-            const faceIndexOffset = (idx - 1) * 4;
-            geometry.faces.push(new THREE.Face3(0 + faceIndexOffset, 4 + faceIndexOffset, 1 + faceIndexOffset));
-            geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 4 + faceIndexOffset, 5 + faceIndexOffset));
-            geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 3 + faceIndexOffset, 6 + faceIndexOffset));
-            geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 7 + faceIndexOffset, 6 + faceIndexOffset));
-            geometry.faces.push(new THREE.Face3(0 + faceIndexOffset, 2 + faceIndexOffset, 4 + faceIndexOffset));
-            geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 6 + faceIndexOffset, 4 + faceIndexOffset));
-            geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 5 + faceIndexOffset, 3 + faceIndexOffset));
-            geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 5 + faceIndexOffset, 7 + faceIndexOffset));
+            const faceIndexOffset = (idx - 1) * 6;
+            geometry.faces.push(new THREE.Face3(4 + faceIndexOffset, 10+ faceIndexOffset, 5 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(5 + faceIndexOffset, 10+ faceIndexOffset, 11+ faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 3 + faceIndexOffset, 8 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 9 + faceIndexOffset, 8 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(0 + faceIndexOffset, 2 + faceIndexOffset, 6 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 8 + faceIndexOffset, 6 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 7 + faceIndexOffset, 3 + faceIndexOffset));
+            geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 7 + faceIndexOffset, 9 + faceIndexOffset));
           }
         });
 
-        //       new THREE.Face3(0, 2, 1), new THREE.Face3(1, 2, 3),
-        //       new THREE.Face3(4, 5, 6), new THREE.Face3(5, 7, 6),
-        // geometry.vertices = data.vertices.map(function (vertex) {
-        //     var points = vertex.split(' ').map(function(x){return parseInt(x);});
-        //     return new THREE.Vector3(points[0], points[1], points[2]);
-        // });
-        // const normal = new THREE.Vector2(parseInt(data.end[0]) - parseInt(data.start[0]), parseInt(data.end[1]) - parseInt(data.start[1]));
-        // normal.rotateAround(new THREE.Vector2(0, 0), Math.PI / 2);
-        // normal.normalize();
-        //
-        // geometry.vertices = [
-        //   new THREE.Vector3(parseInt(data.start[1]) + normal.y, 0, -parseInt(data.start[0]) - normal.x),
-        //   new THREE.Vector3(parseInt(data.start[1]) - normal.y, 0, -parseInt(data.start[0]) + normal.x),
-        //   new THREE.Vector3(parseInt(data.end[1]) + normal.y, 0, -parseInt(data.end[0]) - normal.x),
-        //   new THREE.Vector3(parseInt(data.end[1]) - normal.y, 0, -parseInt(data.end[0]) + normal.x),
-        //   new THREE.Vector3(parseInt(data.start[1]) + normal.y, 2.5, -parseInt(data.start[0]) - normal.x),
-        //   new THREE.Vector3(parseInt(data.start[1]) - normal.y, 2.5, -parseInt(data.start[0]) + normal.x),
-        //   new THREE.Vector3(parseInt(data.end[1]) + normal.y, 2.5, -parseInt(data.end[0]) - normal.x),
-        //   new THREE.Vector3(parseInt(data.end[1]) - normal.y, 2.5, -parseInt(data.end[0]) + normal.x)
-        // ];
-        //
-        // console.log('vertices', geometry.vertices);
-        //
-        // geometry.computeBoundingBox();
-        // geometry.faces.push(
-        //   new THREE.Face3(0, 2, 1), new THREE.Face3(1, 2, 3),
-        //   new THREE.Face3(4, 5, 6), new THREE.Face3(5, 7, 6),
-        //
-        // );
-        // // geometry.mergeVertices();
         geometry.computeFaceNormals();
         geometry.computeVertexNormals();
         this.geometry = geometry;
-        //
-        // console.log(this);
       }
     });
 
