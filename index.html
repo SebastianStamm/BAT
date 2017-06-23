@@ -1,17 +1,18 @@
 <html>
   <head>
+    <script src="./bpmn-viewer.js"></script>
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   </head>
   <body>
     <script type="application/javascript">
 
-    const sequenceFlowWidth = 1.5;
+    const sequenceFlowWidth = 1.2;
     const sequenceFlowHeight = 3.5;
     const taskOutlineWidth = 0.5;
     const gatewayOutlineWidth = 0.5;
-    const eventRadius = 2;
     const eventOulineWidth = 0.3;
+    const globalScaleFactor = 0.12;
 
     function getVectorNormal(vec) {
       const normal = new THREE.Vector2(vec.x, vec.y);
@@ -102,7 +103,7 @@
         var geometry = new THREE.Geometry();
 
         const waypoints = data.points.map(point => {
-          return point.split(' ').map(coordinate => parseInt(coordinate));
+          return point.split(' ').map(coordinate => parseFloat(coordinate));
         }).map(coordinate => {
           return new THREE.Vector2(coordinate[0], coordinate[1]);
         });
@@ -153,7 +154,7 @@
         var geometry = new THREE.Geometry();
 
         const waypoints = data.points.map(point => {
-          return point.split(' ').map(coordinate => parseInt(coordinate));
+          return point.split(' ').map(coordinate => parseFloat(coordinate));
         }).map(coordinate => {
           return new THREE.Vector2(coordinate[0], coordinate[1]);
         });
@@ -203,9 +204,9 @@
       init: function (data) {
         var geometry = new THREE.Geometry();
 
-        const pos = new THREE.Vector2(parseInt(data.position.split(' ')[0]) + taskOutlineWidth, parseInt(data.position.split(' ')[1]) + taskOutlineWidth);
-        const width = parseInt(data.width) - taskOutlineWidth * 2;
-        const height = parseInt(data.height) - taskOutlineWidth * 2;
+        const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]) + taskOutlineWidth, parseFloat(data.position.split(' ')[1]) + taskOutlineWidth);
+        const width = parseFloat(data.width) - taskOutlineWidth * 2;
+        const height = parseFloat(data.height) - taskOutlineWidth * 2;
 
         geometry.vertices = [
           new THREE.Vector3(pos.y, 0, -pos.x),
@@ -235,7 +236,7 @@
       init: function (data) {
         var geometry = new THREE.Geometry();
 
-        const pos = new THREE.Vector2(parseInt(data.position.split(' ')[0]) + gatewayOutlineWidth, parseInt(data.position.split(' ')[1]) + gatewayOutlineWidth);
+        const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]) + gatewayOutlineWidth, parseFloat(data.position.split(' ')[1]) + gatewayOutlineWidth);
         const width = 6;
         const height = 6;
 
@@ -267,7 +268,7 @@
       init: function (data) {
         var geometry = new THREE.Geometry();
 
-        const pos = new THREE.Vector2(parseInt(data.position.split(' ')[0]), parseInt(data.position.split(' ')[1]));
+        const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]), parseFloat(data.position.split(' ')[1]));
 
         const width = 6 + 2 * gatewayOutlineWidth;
         const height = 6 + 2 * gatewayOutlineWidth;
@@ -306,9 +307,9 @@
       init: function (data) {
         var geometry = new THREE.Geometry();
 
-        const pos = new THREE.Vector2(parseInt(data.position.split(' ')[0]), parseInt(data.position.split(' ')[1]));
-        const width = parseInt(data.width);
-        const height = parseInt(data.height);
+        const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]), parseFloat(data.position.split(' ')[1]));
+        const width = parseFloat(data.width);
+        const height = parseFloat(data.height);
 
         geometry.vertices = [
           new THREE.Vector3(pos.y, 0, -pos.x),
@@ -349,8 +350,15 @@
         const reader = new FileReader();
 
         reader.addEventListener('load', e => {
-          // resolve(e.target.result);
           console.log('file content', e.target.result);
+          var BpmnViewer = window.BpmnJS;
+
+          var viewer = new BpmnViewer({ container: document.createElement('div') });
+
+          viewer.importXML(e.target.result, (err, result) => {
+            handleModel(viewer);
+            document.body.removeChild(splash);
+          });
         });
 
         reader.readAsText(file);
@@ -360,13 +368,111 @@
 
     }
 
+    function handleSequenceFlow(scene, element) {
+      /*    <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
+            <a-entity geometry="primitive: sequenceFlowLine; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #333333"></a-entity>
+      */
+      const points = element.waypoints.reduce((acc, val) => {
+        return acc += (val.x * globalScaleFactor) + ' ' + (val.y * globalScaleFactor) + ', ';
+      }, '').slice(0, -2);
+
+      console.log('points', points);
+
+      const flow = document.createElement('a-entity');
+      flow.setAttribute('geometry', 'primitive: sequenceFlow; points:' + points + ';');
+      flow.setAttribute('material', 'color: #FFFFFF');
+
+      const line = document.createElement('a-entity');
+      line.setAttribute('geometry', 'primitive: sequenceFlowLine; points:' + points + ';');
+      line.setAttribute('material', 'color: #333333');
+
+      scene.appendChild(flow);
+      scene.appendChild(line);
+    }
+
+    function handleEvent(scene, element) {
+      /*  <a-entity geometry="primitive: circle; radius: 2;" rotation="-90 0 0" material="color: #FFFFFF" position="5 0 -5"></a-entity>
+          <a-entity geometry="primitive: circle; radius: 2.3;" rotation="-90 0 0" material="color: #333333;" position="5 -0.005 -5"></a-entity>
+      */
+
+      console.log('got event', element);
+      const posOffset = element.width / 2 * globalScaleFactor;
+
+      const event = document.createElement('a-entity');
+      event.setAttribute('geometry', 'primitive: circle; radius:' + (posOffset - eventOulineWidth) + ';');
+      event.setAttribute('rotation', '-90 0 0');
+      event.setAttribute('position', (element.y * globalScaleFactor + posOffset) + ' 0 ' + -(element.x * globalScaleFactor + posOffset));
+      event.setAttribute('material', 'color: #FFFFFF');
+
+      const line = document.createElement('a-entity');
+      line.setAttribute('geometry', 'primitive: circle; radius:' + posOffset + ';');
+      line.setAttribute('rotation', '-90 0 0');
+      line.setAttribute('position', (element.y * globalScaleFactor + posOffset) + ' -0.005 ' + -(element.x * globalScaleFactor + posOffset));
+      line.setAttribute('material', 'color: #333333');
+
+      scene.appendChild(event);
+      scene.appendChild(line);
+    }
+
+    function handleTask(scene, element) {
+      /* <a-entity geometry="primitive: task; position: 10 15; width: 10; height: 10;" material="color: #FFFFFF"></a-entity>
+         <a-entity geometry="primitive: taskLine; position: 10 15; width: 10; height: 10;" material="color: #333333"></a-entity>
+      */
+      const task = document.createElement('a-entity');
+      task.setAttribute('geometry', 'primitive: task; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
+      task.setAttribute('material', 'color: #FFFFFF');
+
+      const line = document.createElement('a-entity');
+      line.setAttribute('geometry', 'primitive: taskLine; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
+      line.setAttribute('material', 'color: #333333');
+
+      scene.appendChild(task);
+      scene.appendChild(line);
+    }
+
+    function handleModel(viewer) {
+      const scene = document.createElement('a-scene');
+
+      // <a-sky color="#ECECEC"></a-sky>
+      const sky = document.createElement('a-sky');
+      sky.setAttribute('color', '#ECECEC');
+
+      scene.appendChild(sky);
+
+      window.viewer = viewer;
+
+      const data = [];
+      const elementRegistry = viewer.get('elementRegistry');
+
+      elementRegistry.forEach(element => {
+        console.log('element', element);
+        const bo = element.businessObject;
+        if(element.type === 'label') {
+          return;
+        }
+
+        if(bo.$instanceOf('bpmn:SequenceFlow')) {
+          handleSequenceFlow(scene, element);
+        }
+
+        if(bo.$instanceOf('bpmn:Task')) {
+          handleTask(scene, element);
+        }
+
+        if(bo.$instanceOf('bpmn:Event')) {
+          handleEvent(scene, element);
+        }
+      });
+
+      document.body.appendChild(scene);
+    }
+
     </script>
 
-    <div style="position:absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000">
+    <div style="position:absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000" id="splash">
       <div style="color: white; text-align: center; font-size: 30em; cursor: pointer;" onClick="loadBpmn()">🦇</div>
       <div style="color: white; text-align: center; font-size: 8em; font-family: 'Roboto', sans-serif;">BAT</div>
     </div>
-
 
     <!-- <a-scene>
       <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
