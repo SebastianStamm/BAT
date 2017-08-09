@@ -21,7 +21,7 @@ loadScript("https://aframe.io/releases/0.5.0/aframe.min.js");
 
 window.setTimeout(() => {
   loadScript("https://sebastianstamm.github.io/BAT/globals.js", true);
-  // loadScript("https://sebastianstamm.github.io/BAT/utils.js", true);
+  loadScript("https://sebastianstamm.github.io/BAT/utils.js", true);
   loadScript("https://sebastianstamm.github.io/BAT/collision.js", true);
   loadScript("https://sebastianstamm.github.io/BAT/sequenceFlow.js", true);
   loadScript("https://sebastianstamm.github.io/BAT/task.js", true);
