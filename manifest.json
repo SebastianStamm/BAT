@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "matches": ["https://cawemo.com/d/*"],
-      "js": ["index.js"]
+      "js": ["bpmn-viewer.js", "utils.js", "globals.js", "index.js"]
     }
   ]
 }

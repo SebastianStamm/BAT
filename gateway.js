@@ -1,3 +1,14 @@
+const sequenceFlowWidth = window.sequenceFlowWidth;
+const sequenceFlowHeight = window.sequenceFlowHeight;
+const taskOutlineWidth = window.taskOutlineWidth;
+const gatewayOutlineWidth = window.gatewayOutlineWidth;
+const eventOulineWidth = window.eventOulineWidth;
+const globalScaleFactor = window.globalScaleFactor;
+const layer0 = window.layer0;
+const layer1 = window.layer1;
+const layer2 = window.layer2;
+const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
+
 window.AFRAME.registerGeometry('gateway', {
   schema: {
     position: {
@@ -98,22 +109,3 @@ window.AFRAME.registerGeometry('gatewayLine', {
     this.geometry = geometry;
   }
 });
-
-function handleGateway(scene, element) {
-  /*  <a-entity geometry="primitive: gateway; position: 8 3;" material="color: #FFFFFF;"></a-entity>
-      <a-entity geometry="primitive: gatewayLine; position: 8 3;" material="color: #333333"></a-entity>
-  */
-
-  const posOffset = element.width / 2 * globalScaleFactor;
-
-  const gateway = document.createElement('a-entity');
-  gateway.setAttribute('geometry', 'primitive: gateway; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
-  gateway.setAttribute('material', 'color: #FFFFFF');
-
-  const line = document.createElement('a-entity');
-  line.setAttribute('geometry', 'primitive: gatewayLine; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
-  line.setAttribute('material', 'color: #333333');
-
-  scene.appendChild(gateway);
-  scene.appendChild(line);
-}

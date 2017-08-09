@@ -1,3 +1,13 @@
+const sequenceFlowWidth = window.sequenceFlowWidth;
+const sequenceFlowHeight = window.sequenceFlowHeight;
+const taskOutlineWidth = window.taskOutlineWidth;
+const gatewayOutlineWidth = window.gatewayOutlineWidth;
+const eventOulineWidth = window.eventOulineWidth;
+const globalScaleFactor = window.globalScaleFactor;
+const layer0 = window.layer0;
+const layer1 = window.layer1;
+const layer2 = window.layer2;
+const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
 function handleEvent(scene, element) {
   /*  <a-entity geometry="primitive: circle; radius: 2;" rotation="-90 0 0" material="color: #FFFFFF" position="5 0 -5"></a-entity>
       <a-entity geometry="primitive: circle; radius: 2.3;" rotation="-90 0 0" material="color: #333333;" position="5 -0.005 -5"></a-entity>

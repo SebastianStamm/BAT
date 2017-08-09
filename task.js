@@ -1,3 +1,14 @@
+const sequenceFlowWidth = window.sequenceFlowWidth;
+const sequenceFlowHeight = window.sequenceFlowHeight;
+const taskOutlineWidth = window.taskOutlineWidth;
+const gatewayOutlineWidth = window.gatewayOutlineWidth;
+const eventOulineWidth = window.eventOulineWidth;
+const globalScaleFactor = window.globalScaleFactor;
+const layer0 = window.layer0;
+const layer1 = window.layer1;
+const layer2 = window.layer2;
+const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
+
 window.AFRAME.registerGeometry('task', {
   schema: {
     position: {
@@ -140,53 +151,3 @@ window.AFRAME.registerGeometry('taskLine', {
     this.geometry = geometry;
   }
 });
-
-function handleTask(scene, element) {
-  /* <a-entity geometry="primitive: task; position: 10 15; width: 10; height: 10;" material="color: #FFFFFF"></a-entity>
-     <a-entity geometry="primitive: taskLine; position: 10 15; width: 10; height: 10;" material="color: #333333"></a-entity>
-  */
-
-  const task = document.createElement('a-entity');
-  task.setAttribute('geometry', 'primitive: task; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
-  task.setAttribute('material', 'color: #FFFFFF');
-
-  const line = document.createElement('a-entity');
-  line.setAttribute('geometry', 'primitive: taskLine; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
-  line.setAttribute('material', 'color: #333333');
-
-  // text label look-controls
-  const name = element.businessObject.name;
-  const label = document.createElement('a-entity');
-  label.setAttribute('rotation', '-90 90 0');
-  label.setAttribute('text', 'value: ' + name + '; color: black; width: ' + element.width * globalScaleFactor * 1.7 + ';');
-  label.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor));
-  // <a-entity text="value: Hello world; color: black; width: 10;" rotation="-90 0 0"></a-entity>
-
-  // human for usertasks
-  if(element.businessObject.$instanceOf('bpmn:UserTask')) {
-    //<a-entity obj-model="obj: #human-obj;" scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
-    const model = document.createElement('a-entity');
-    model.setAttribute('obj-model', 'obj: #human-obj;');
-    model.setAttribute('scale', '0.2 0.2 0.2');
-    model.setAttribute('rotation', '0 90 0');
-    model.setAttribute('position', (element.y * globalScaleFactor + element.height / 10 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 10));
-
-    scene.appendChild(model);
-  }
-
-  // computer for serviceTasks
-  if(element.businessObject.$instanceOf('bpmn:ServiceTask')) {
-    //<a-entity obj-model="obj: #human-obj;" scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
-    const model = document.createElement('a-entity');
-    model.setAttribute('obj-model', 'obj: #computer-obj;');
-    model.setAttribute('scale', '0.01 0.01 0.01');
-    model.setAttribute('rotation', '0 90 0');
-    model.setAttribute('position', (element.y * globalScaleFactor + element.height / 10 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 10))
-
-    scene.appendChild(model);
-  }
-
-  scene.appendChild(task);
-  scene.appendChild(line);
-  scene.appendChild(label);
-}

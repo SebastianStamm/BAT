@@ -16,15 +16,18 @@ function loadScript(name, toBody) {
   }
 }
 
-loadScript("https://sebastianstamm.github.io/BAT/bpmn-viewer.js");
+// loadScript("https://sebastianstamm.github.io/BAT/bpmn-viewer.js");
 loadScript("https://aframe.io/releases/0.5.0/aframe.min.js");
-loadScript("https://sebastianstamm.github.io/BAT/globals.js", true);
-loadScript("https://sebastianstamm.github.io/BAT/utils.js", true);
-loadScript("https://sebastianstamm.github.io/BAT/collision.js", true);
-loadScript("https://sebastianstamm.github.io/BAT/sequenceFlow.js", true);
-loadScript("https://sebastianstamm.github.io/BAT/task.js", true);
-loadScript("https://sebastianstamm.github.io/BAT/gateway.js", true);
-loadScript("https://sebastianstamm.github.io/BAT/event.js", true);
+
+window.setTimeout(() => {
+  loadScript("https://sebastianstamm.github.io/BAT/globals.js", true);
+  // loadScript("https://sebastianstamm.github.io/BAT/utils.js", true);
+  loadScript("https://sebastianstamm.github.io/BAT/collision.js", true);
+  loadScript("https://sebastianstamm.github.io/BAT/sequenceFlow.js", true);
+  loadScript("https://sebastianstamm.github.io/BAT/task.js", true);
+  loadScript("https://sebastianstamm.github.io/BAT/gateway.js", true);
+  loadScript("https://sebastianstamm.github.io/BAT/event.js", true);
+}, 1000);
 
 
 const batButtonContainer = document.createElement('div');
@@ -69,7 +72,7 @@ function start() {
 
   var viewer = new BpmnViewer({ container: document.createElement('div') });
 
-  viewer.importXML(e.target.result, (err, result) => {
+  viewer.importXML(diagramXML, (err, result) => {
     handleModel(viewer);
   });
 

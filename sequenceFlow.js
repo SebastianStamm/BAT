@@ -1,3 +1,15 @@
+const sequenceFlowWidth = window.sequenceFlowWidth;
+const sequenceFlowHeight = window.sequenceFlowHeight;
+const taskOutlineWidth = window.taskOutlineWidth;
+const gatewayOutlineWidth = window.gatewayOutlineWidth;
+const eventOulineWidth = window.eventOulineWidth;
+const globalScaleFactor = window.globalScaleFactor;
+const layer0 = window.layer0;
+const layer1 = window.layer1;
+const layer2 = window.layer2;
+const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
+
+
 window.AFRAME.registerGeometry('sequenceFlow', {
   schema: {
     points: {
@@ -95,23 +107,3 @@ window.AFRAME.registerGeometry('sequenceFlowLine', {
     this.geometry = geometry;
   }
 });
-
-function handleSequenceFlow(scene, element) {
-  /*    <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
-        <a-entity geometry="primitive: sequenceFlowLine; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #333333"></a-entity>
-  */
-  const points = element.waypoints.reduce((acc, val) => {
-    return acc += (val.x * globalScaleFactor) + ' ' + (val.y * globalScaleFactor) + ', ';
-  }, '').slice(0, -2);
-
-  const flow = document.createElement('a-entity');
-  flow.setAttribute('geometry', 'primitive: sequenceFlow; points:' + points + ';');
-  flow.setAttribute('material', 'color: #FFFFFF; side: double;');
-
-  const line = document.createElement('a-entity');
-  line.setAttribute('geometry', 'primitive: sequenceFlowLine; points:' + points + ';');
-  line.setAttribute('material', 'color: #333333');
-
-  scene.appendChild(flow);
-  scene.appendChild(line);
-}
