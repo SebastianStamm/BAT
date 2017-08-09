@@ -1,0 +1,9 @@
+window.sequenceFlowWidth = 1.2;
+window.sequenceFlowHeight = 3.5;
+window.taskOutlineWidth = 0.5;
+window.gatewayOutlineWidth = 0.5;
+window.eventOulineWidth = 0.3;
+window.globalScaleFactor = 0.17;
+window.layer0 = 0;
+window.layer1 = 0.005;
+window.layer2 = 0.01;
