@@ -8,20 +8,28 @@ AFRAME.registerGeometry('gateway', {
   init: function (data) {
     var geometry = new THREE.Geometry();
 
-    const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]) + gatewayOutlineWidth, parseFloat(data.position.split(' ')[1]) + gatewayOutlineWidth);
-    const width = parseFloat(data.width) - 2 * gatewayOutlineWidth;
-    const height = parseFloat(data.height) - 2 * gatewayOutlineWidth;
+    const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]), parseFloat(data.position.split(' ')[1]));
+    const width = parseFloat(data.width);
+    const height = parseFloat(data.height);
 
     geometry.vertices = [
-      new THREE.Vector3(pos.y, 0, -pos.x - width / 2),
-      new THREE.Vector3(pos.y + height / 2, 0, -pos.x),
-      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2),
-      new THREE.Vector3(pos.y + height / 2, 0, -pos.x - width)
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 + sequenceFlowWidth),
     ];
 
     geometry.faces = [
-      new THREE.Face3(0, 1, 2),
-      new THREE.Face3(2, 3, 0)
+      new THREE.Face3(0,2,1),
+      new THREE.Face3(0,3,2),
+      new THREE.Face3(0,4,3),
+      new THREE.Face3(0,5,4),
+      new THREE.Face3(0,6,5),
+      new THREE.Face3(0,7,6)
     ];
 
     geometry.computeFaceNormals();
@@ -46,15 +54,34 @@ AFRAME.registerGeometry('gatewayLine', {
     const height = parseFloat(data.height);
 
     geometry.vertices = [
-      new THREE.Vector3(pos.y, -layer1, -pos.x - width / 2),
-      new THREE.Vector3(pos.y + height / 2, -layer1, -pos.x),
-      new THREE.Vector3(pos.y + height, -layer1, -pos.x - width / 2),
-      new THREE.Vector3(pos.y + height / 2, -layer1, -pos.x - width)
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x),
+      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 + sequenceFlowWidth),
+
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x - taskOutlineWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x - taskOutlineWidth),
+      new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x - width + taskOutlineWidth),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x - width + taskOutlineWidth),
+      new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - width / 2 + sequenceFlowWidth)
     ];
 
     geometry.faces = [
-      new THREE.Face3(0, 1, 2),
-      new THREE.Face3(2, 3, 0)
+      new THREE.Face3(1, 9, 2),
+      new THREE.Face3(9, 10, 2),
+      new THREE.Face3(3, 11, 4),
+      new THREE.Face3(11, 12, 4),
+      new THREE.Face3(5, 13, 6),
+      new THREE.Face3(13, 14, 6),
+      new THREE.Face3(7, 15, 0),
+      new THREE.Face3(15, 8, 0)
     ];
 
     geometry.computeFaceNormals();
