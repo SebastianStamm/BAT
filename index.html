@@ -12,7 +12,7 @@
     const taskOutlineWidth = 0.5;
     const gatewayOutlineWidth = 0.5;
     const eventOulineWidth = 0.3;
-    const globalScaleFactor = 0.17;
+    const globalScaleFactor = 0.1;
 
     function getVectorNormal(vec) {
       const normal = new THREE.Vector2(vec.x, vec.y);
@@ -65,16 +65,25 @@
 
             const normal = vec2.clone().rotateAround(new THREE.Vector2(0, 0), -halfAngle);
             normal.normalize();
-            normal.multiplyScalar(sequenceFlowWidth);
+            normal.multiplyScalar(sequenceFlowWidth * 1.5);
 
             const shortNormal = normal.clone().multiplyScalar(.8);
 
-            return [
-              waypoint.clone().add(normal),
-              waypoint.clone().sub(normal),
-              waypoint.clone().add(shortNormal),
-              waypoint.clone().sub(shortNormal)
-            ];
+            if(halfAngle < 0) {
+              return [
+                waypoint.clone().add(normal),
+                waypoint.clone().sub(normal),
+                waypoint.clone().add(shortNormal),
+                waypoint.clone().sub(shortNormal)
+              ];
+            } else {
+              return [
+                waypoint.clone().sub(normal),
+                waypoint.clone().add(normal),
+                waypoint.clone().sub(shortNormal),
+                waypoint.clone().add(shortNormal)
+              ];
+            }
           } else {
             // last waypoint, take the normal
             const movingVector = waypoint.clone().sub(previousWaypoint);
@@ -350,7 +359,6 @@
         const reader = new FileReader();
 
         reader.addEventListener('load', e => {
-          console.log('file content', e.target.result);
           var BpmnViewer = window.BpmnJS;
 
           var viewer = new BpmnViewer({ container: document.createElement('div') });
@@ -376,8 +384,6 @@
         return acc += (val.x * globalScaleFactor) + ' ' + (val.y * globalScaleFactor) + ', ';
       }, '').slice(0, -2);
 
-      console.log('points', points);
-
       const flow = document.createElement('a-entity');
       flow.setAttribute('geometry', 'primitive: sequenceFlow; points:' + points + ';');
       flow.setAttribute('material', 'color: #FFFFFF; side: double;');
@@ -395,7 +401,6 @@
           <a-entity geometry="primitive: circle; radius: 2.3;" rotation="-90 0 0" material="color: #333333;" position="5 -0.005 -5"></a-entity>
       */
 
-      console.log('got event', element);
       const posOffset = element.width / 2 * globalScaleFactor;
 
       const event = document.createElement('a-entity');
@@ -419,7 +424,6 @@
           <a-entity geometry="primitive: gatewayLine; position: 8 3;" material="color: #333333"></a-entity>
       */
 
-      console.log('got gateway', element);
       const posOffset = element.width / 2 * globalScaleFactor;
 
       const gateway = document.createElement('a-entity');
@@ -438,7 +442,6 @@
       /* <a-entity geometry="primitive: task; position: 10 15; width: 10; height: 10;" material="color: #FFFFFF"></a-entity>
          <a-entity geometry="primitive: taskLine; position: 10 15; width: 10; height: 10;" material="color: #333333"></a-entity>
       */
-      console.log('handling task', element);
 
       const task = document.createElement('a-entity');
       task.setAttribute('geometry', 'primitive: task; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
