@@ -30,8 +30,8 @@ window.AFRAME.registerGeometry('task', {
       new THREE.Face3(2, 3, 0)
     ];
 
-    addSpace(geometry.vertices[0], geometry.vertices[1], geometry.vertices[2]);
-    addSpace(geometry.vertices[2], geometry.vertices[3], geometry.vertices[0]);
+    window.addSpace(geometry.vertices[0], geometry.vertices[1], geometry.vertices[2]);
+    window.addSpace(geometry.vertices[2], geometry.vertices[3], geometry.vertices[0]);
 
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();

@@ -32,12 +32,12 @@ window.AFRAME.registerGeometry('gateway', {
       new THREE.Face3(0,7,6)
     ];
 
-    addSpace(geometry.vertices[0], geometry.vertices[2], geometry.vertices[1]);
-    addSpace(geometry.vertices[0], geometry.vertices[3], geometry.vertices[2]);
-    addSpace(geometry.vertices[0], geometry.vertices[4], geometry.vertices[3]);
-    addSpace(geometry.vertices[0], geometry.vertices[5], geometry.vertices[4]);
-    addSpace(geometry.vertices[0], geometry.vertices[6], geometry.vertices[5]);
-    addSpace(geometry.vertices[0], geometry.vertices[7], geometry.vertices[6]);
+    window.addSpace(geometry.vertices[0], geometry.vertices[2], geometry.vertices[1]);
+    window.addSpace(geometry.vertices[0], geometry.vertices[3], geometry.vertices[2]);
+    window.addSpace(geometry.vertices[0], geometry.vertices[4], geometry.vertices[3]);
+    window.addSpace(geometry.vertices[0], geometry.vertices[5], geometry.vertices[4]);
+    window.addSpace(geometry.vertices[0], geometry.vertices[6], geometry.vertices[5]);
+    window.addSpace(geometry.vertices[0], geometry.vertices[7], geometry.vertices[6]);
 
 
     geometry.computeFaceNormals();

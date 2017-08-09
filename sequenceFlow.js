@@ -14,7 +14,7 @@ window.AFRAME.registerGeometry('sequenceFlow', {
       return new THREE.Vector2(coordinate[0], coordinate[1]);
     });
 
-    const mappedWaypoints = calculateWaypoints(waypoints);
+    const mappedWaypoints = window.calculateWaypoints(waypoints);
 
     geometry.vertices = [];
     geometry.faces = [];
@@ -40,8 +40,8 @@ window.AFRAME.registerGeometry('sequenceFlow', {
         // geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 7 + faceIndexOffset, 3 + faceIndexOffset));
         // geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 7 + faceIndexOffset, 9 + faceIndexOffset));
 
-        addSpace(geometry.vertices[4 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[5 + faceIndexOffset]);
-        addSpace(geometry.vertices[5 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[11 + faceIndexOffset]);
+        window.addSpace(geometry.vertices[4 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[5 + faceIndexOffset]);
+        window.addSpace(geometry.vertices[5 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[11 + faceIndexOffset]);
       }
     });
 
@@ -68,7 +68,7 @@ window.AFRAME.registerGeometry('sequenceFlowLine', {
       return new THREE.Vector2(coordinate[0], coordinate[1]);
     });
 
-    const mappedWaypoints = calculateWaypoints(waypoints);
+    const mappedWaypoints = window.calculateWaypoints(waypoints);
 
     geometry.vertices = [];
     geometry.faces = [];
