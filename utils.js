@@ -85,6 +85,11 @@ function calculateWaypoints(waypoints) {
   });
 }
 
+openSpaces = [];
+function addSpace(p1,p2,p3) {
+  openSpaces.push({p1,p2,p3});
+}
+
 function handleModel(viewer) {
   const scene = document.createElement('a-scene');
 
@@ -149,6 +154,7 @@ function handleModel(viewer) {
   camera.setAttribute('look-controls', true);
   camera.setAttribute('wasd-controls', 'acceleration: 250');
   camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
+  camera.setAttribute('collision', true);
   scene.appendChild(camera);
 
   document.body.appendChild(scene);
