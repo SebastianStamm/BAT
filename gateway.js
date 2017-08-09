@@ -1,4 +1,4 @@
-AFRAME.registerGeometry('gateway', {
+window.AFRAME.registerGeometry('gateway', {
   schema: {
     position: {
       default: '0 0'
@@ -46,7 +46,7 @@ AFRAME.registerGeometry('gateway', {
   }
 });
 
-AFRAME.registerGeometry('gatewayLine', {
+window.AFRAME.registerGeometry('gatewayLine', {
   schema: {
     position: {
       default: '0 0'

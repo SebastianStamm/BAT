@@ -1,4 +1,4 @@
-AFRAME.registerGeometry('sequenceFlow', {
+window.AFRAME.registerGeometry('sequenceFlow', {
   schema: {
     points: {
       default: ['0 0', '10 10']
@@ -52,7 +52,7 @@ AFRAME.registerGeometry('sequenceFlow', {
 });
 
 
-AFRAME.registerGeometry('sequenceFlowLine', {
+window.AFRAME.registerGeometry('sequenceFlowLine', {
   schema: {
     points: {
       default: ['0 0', '10 10']

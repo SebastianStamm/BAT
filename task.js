@@ -1,4 +1,4 @@
-AFRAME.registerGeometry('task', {
+window.AFRAME.registerGeometry('task', {
   schema: {
     position: {
       default: '0 0'
@@ -39,7 +39,7 @@ AFRAME.registerGeometry('task', {
   }
 });
 
-AFRAME.registerGeometry('taskLine', {
+window.AFRAME.registerGeometry('taskLine', {
   schema: {
     position: {
       default: '0 0'

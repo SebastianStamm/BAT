@@ -1,5 +1,5 @@
 (function() {
-	AFRAME.registerComponent( 'collision', {
+	window.AFRAME.registerComponent( 'collision', {
 		init: function() {
       console.log('initializing collision');
 		},
