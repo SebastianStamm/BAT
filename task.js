@@ -1,14 +1,3 @@
-const sequenceFlowWidth = window.sequenceFlowWidth;
-const sequenceFlowHeight = window.sequenceFlowHeight;
-const taskOutlineWidth = window.taskOutlineWidth;
-const gatewayOutlineWidth = window.gatewayOutlineWidth;
-const eventOulineWidth = window.eventOulineWidth;
-const globalScaleFactor = window.globalScaleFactor;
-const layer0 = window.layer0;
-const layer1 = window.layer1;
-const layer2 = window.layer2;
-const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
-
 window.AFRAME.registerGeometry('task', {
   schema: {
     position: {
@@ -71,33 +60,33 @@ window.AFRAME.registerGeometry('taskLine', {
     const height = parseFloat(data.height);
 
     geometry.vertices = [
-        new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x),
-        new THREE.Vector3(pos.y, layer1, -pos.x),
-        new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor),
-        new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor - taskOutlineWidth, layer1, -pos.x - taskOutlineWidth),
-        new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - taskOutlineWidth),
-        new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor + taskOutlineWidth),
+        new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x),
+        new THREE.Vector3(pos.y, window.layer1, -pos.x),
+        new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor),
+        new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor - window.taskOutlineWidth, window.layer1, -pos.x - window.taskOutlineWidth),
+        new THREE.Vector3(pos.y + window.taskOutlineWidth, window.layer1, -pos.x - window.taskOutlineWidth),
+        new THREE.Vector3(pos.y + window.taskOutlineWidth, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor + window.taskOutlineWidth),
 
-        new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor),
-        new THREE.Vector3(pos.y, layer1, -pos.x - width),
-        new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x - width),
-        new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor - taskOutlineWidth),
-        new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - width + taskOutlineWidth),
-        new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor - taskOutlineWidth, layer1, -pos.x - width + taskOutlineWidth),
+        new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor),
+        new THREE.Vector3(pos.y, window.layer1, -pos.x - width),
+        new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x - width),
+        new THREE.Vector3(pos.y + window.taskOutlineWidth, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor - window.taskOutlineWidth),
+        new THREE.Vector3(pos.y + window.taskOutlineWidth, window.layer1, -pos.x - width + window.taskOutlineWidth),
+        new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor - window.taskOutlineWidth, window.layer1, -pos.x - width + window.taskOutlineWidth),
 
-        new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x),
-        new THREE.Vector3(pos.y + height, layer1, -pos.x),
-        new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor),
-        new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor + taskOutlineWidth, layer1, -pos.x - taskOutlineWidth),
-        new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - taskOutlineWidth),
-        new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor + taskOutlineWidth),
+        new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x),
+        new THREE.Vector3(pos.y + height, window.layer1, -pos.x),
+        new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor),
+        new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor + window.taskOutlineWidth, window.layer1, -pos.x - window.taskOutlineWidth),
+        new THREE.Vector3(pos.y + height - window.taskOutlineWidth, window.layer1, -pos.x - window.taskOutlineWidth),
+        new THREE.Vector3(pos.y + height - window.taskOutlineWidth, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor + window.taskOutlineWidth),
 
-        new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor),
-        new THREE.Vector3(pos.y + height, layer1, -pos.x - width),
-        new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x - width),
-        new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor - taskOutlineWidth),
-        new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - width + taskOutlineWidth),
-        new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor + taskOutlineWidth, layer1, -pos.x - width + taskOutlineWidth)
+        new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor),
+        new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width),
+        new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x - width),
+        new THREE.Vector3(pos.y + height - window.taskOutlineWidth, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor - window.taskOutlineWidth),
+        new THREE.Vector3(pos.y + height - window.taskOutlineWidth, window.layer1, -pos.x - width + window.taskOutlineWidth),
+        new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor + window.taskOutlineWidth, window.layer1, -pos.x - width + window.taskOutlineWidth)
     ];
 
     geometry.faces = [
@@ -125,14 +114,14 @@ window.AFRAME.registerGeometry('taskLine', {
     ];
 
     // geometry.vertices = [
-    //   new THREE.Vector3(pos.y, layer1, -pos.x),
-    //   new THREE.Vector3(pos.y + height, layer1, -pos.x),
-    //   new THREE.Vector3(pos.y + height, layer1, -pos.x - width),
-    //   new THREE.Vector3(pos.y, layer1, -pos.x - width),
-    //   new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - taskOutlineWidth),
-    //   new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - taskOutlineWidth),
-    //   new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - width + taskOutlineWidth),
-    //   new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - width + taskOutlineWidth)
+    //   new THREE.Vector3(pos.y, window.layer1, -pos.x),
+    //   new THREE.Vector3(pos.y + height, window.layer1, -pos.x),
+    //   new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width),
+    //   new THREE.Vector3(pos.y, window.layer1, -pos.x - width),
+    //   new THREE.Vector3(pos.y + window.taskOutlineWidth, window.layer1, -pos.x - window.taskOutlineWidth),
+    //   new THREE.Vector3(pos.y + height - window.taskOutlineWidth, window.layer1, -pos.x - window.taskOutlineWidth),
+    //   new THREE.Vector3(pos.y + height - window.taskOutlineWidth, window.layer1, -pos.x - width + window.taskOutlineWidth),
+    //   new THREE.Vector3(pos.y + window.taskOutlineWidth, window.layer1, -pos.x - width + window.taskOutlineWidth)
     // ];
     //
     // geometry.faces = [

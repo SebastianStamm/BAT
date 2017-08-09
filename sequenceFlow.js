@@ -1,15 +1,3 @@
-const sequenceFlowWidth = window.sequenceFlowWidth;
-const sequenceFlowHeight = window.sequenceFlowHeight;
-const taskOutlineWidth = window.taskOutlineWidth;
-const gatewayOutlineWidth = window.gatewayOutlineWidth;
-const eventOulineWidth = window.eventOulineWidth;
-const globalScaleFactor = window.globalScaleFactor;
-const layer0 = window.layer0;
-const layer1 = window.layer1;
-const layer2 = window.layer2;
-const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
-
-
 window.AFRAME.registerGeometry('sequenceFlow', {
   schema: {
     points: {
@@ -35,8 +23,8 @@ window.AFRAME.registerGeometry('sequenceFlow', {
       geometry.vertices.push(
         new THREE.Vector3(waypoint[0].y, 0, -waypoint[0].x),
         new THREE.Vector3(waypoint[1].y, 0, -waypoint[1].x),
-        new THREE.Vector3(waypoint[0].y, sequenceFlowHeight, -waypoint[0].x),
-        new THREE.Vector3(waypoint[1].y, sequenceFlowHeight, -waypoint[1].x),
+        new THREE.Vector3(waypoint[0].y, window.sequenceFlowHeight, -waypoint[0].x),
+        new THREE.Vector3(waypoint[1].y, window.sequenceFlowHeight, -waypoint[1].x),
         new THREE.Vector3(waypoint[2].y, 0, -waypoint[2].x),
         new THREE.Vector3(waypoint[3].y, 0, -waypoint[3].x),
       );

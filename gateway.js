@@ -1,14 +1,3 @@
-const sequenceFlowWidth = window.sequenceFlowWidth;
-const sequenceFlowHeight = window.sequenceFlowHeight;
-const taskOutlineWidth = window.taskOutlineWidth;
-const gatewayOutlineWidth = window.gatewayOutlineWidth;
-const eventOulineWidth = window.eventOulineWidth;
-const globalScaleFactor = window.globalScaleFactor;
-const layer0 = window.layer0;
-const layer1 = window.layer1;
-const layer2 = window.layer2;
-const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
-
 window.AFRAME.registerGeometry('gateway', {
   schema: {
     position: {
@@ -24,14 +13,14 @@ window.AFRAME.registerGeometry('gateway', {
     const height = parseFloat(data.height);
 
     geometry.vertices = [
-      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x),
-      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x),
-      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 + sequenceFlowWidth),
-      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 - sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x - width),
-      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x - width),
-      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 - sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 + window.sequenceFlowWidth),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 - window.sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 - window.sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 + window.sequenceFlowWidth),
     ];
 
     geometry.faces = [
@@ -73,23 +62,23 @@ window.AFRAME.registerGeometry('gatewayLine', {
     const height = parseFloat(data.height);
 
     geometry.vertices = [
-      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x),
-      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x),
-      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 + sequenceFlowWidth),
-      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 - sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x - width),
-      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x - width),
-      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 - sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth, window.layer1, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth, window.layer1, -pos.x),
+      new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth),
+      new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth, window.layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth, window.layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth),
 
-      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x),
-      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x),
-      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor),
-      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor),
-      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x - width),
-      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x - width),
-      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor),
-      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x),
+      new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor),
 
     ];
 

@@ -1,21 +1,10 @@
-const sequenceFlowWidth = window.sequenceFlowWidth;
-const sequenceFlowHeight = window.sequenceFlowHeight;
-const taskOutlineWidth = window.taskOutlineWidth;
-const gatewayOutlineWidth = window.gatewayOutlineWidth;
-const eventOulineWidth = window.eventOulineWidth;
-const globalScaleFactor = window.globalScaleFactor;
-const layer0 = window.layer0;
-const layer1 = window.layer1;
-const layer2 = window.layer2;
-const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
-
 function getVectorNormal(vec) {
   const normal = new THREE.Vector2(vec.x, vec.y);
 
   normal.rotateAround(new THREE.Vector2(0, 0), Math.PI / 2);
   normal.normalize();
 
-  normal.multiplyScalar(sequenceFlowWidth);
+  normal.multiplyScalar(window.sequenceFlowWidth);
 
   return normal;
 }
@@ -42,7 +31,7 @@ function calculateWaypoints(waypoints) {
       // first waypoint, take the normal
       const movingVector = nextWaypoint.clone().sub(waypoint);
       const normal = getVectorNormal(movingVector);
-      const shortNormal = normal.clone().multiplyScalar(flowOutlineWidthFactor);
+      const shortNormal = normal.clone().multiplyScalar(window.flowOutlineWidthFactor);
       return [
         waypoint.clone().add(normal),
         waypoint.clone().sub(normal),
@@ -60,9 +49,9 @@ function calculateWaypoints(waypoints) {
 
         const normal = vec2.clone().rotateAround(new THREE.Vector2(0, 0), -halfAngle);
         normal.normalize();
-        normal.multiplyScalar(sequenceFlowWidth * 1.5);
+        normal.multiplyScalar(window.sequenceFlowWidth * 1.5);
 
-        const shortNormal = normal.clone().multiplyScalar(flowOutlineWidthFactor);
+        const shortNormal = normal.clone().multiplyScalar(window.flowOutlineWidthFactor);
 
         if(halfAngle < 0) {
           return [
@@ -83,7 +72,7 @@ function calculateWaypoints(waypoints) {
         // last waypoint, take the normal
         const movingVector = waypoint.clone().sub(previousWaypoint);
         const normal = getVectorNormal(movingVector);
-        const shortNormal = normal.clone().multiplyScalar(flowOutlineWidthFactor);
+        const shortNormal = normal.clone().multiplyScalar(window.flowOutlineWidthFactor);
 
         return [
           waypoint.clone().add(normal),
@@ -159,12 +148,12 @@ function handleModel(viewer) {
   });
 
   // <a-entity camera="userHeight: 1.6" look-controls></a-entity>
-  const posOffset = startPosition.width / 2 * globalScaleFactor;
+  const posOffset = startPosition.width / 2 * window.globalScaleFactor;
   const camera = document.createElement('a-entity');
   camera.setAttribute('camera', 'userHeight: 1.6');
   camera.setAttribute('look-controls', true);
   camera.setAttribute('wasd-controls', 'acceleration: 250');
-  camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
+  camera.setAttribute('position', (startPosition.y * window.globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * window.globalScaleFactor - posOffset));
   camera.setAttribute('collision', true);
   scene.appendChild(camera);
 
@@ -177,14 +166,14 @@ function handleGateway(scene, element) {
       <a-entity geometry="primitive: gatewayLine; position: 8 3;" material="color: #333333"></a-entity>
   */
 
-  const posOffset = element.width / 2 * globalScaleFactor;
+  const posOffset = element.width / 2 * window.globalScaleFactor;
 
   const gateway = document.createElement('a-entity');
-  gateway.setAttribute('geometry', 'primitive: gateway; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
+  gateway.setAttribute('geometry', 'primitive: gateway; position:' + (element.x * window.globalScaleFactor) + ' ' + (element.y * window.globalScaleFactor) + '; width: '+(element.width * window.globalScaleFactor)+'; height: '+(element.height * window.globalScaleFactor)+';');
   gateway.setAttribute('material', 'color: #FFFFFF');
 
   const line = document.createElement('a-entity');
-  line.setAttribute('geometry', 'primitive: gatewayLine; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
+  line.setAttribute('geometry', 'primitive: gatewayLine; position:' + (element.x * window.globalScaleFactor) + ' ' + (element.y * window.globalScaleFactor) + '; width: '+(element.width * window.globalScaleFactor)+'; height: '+(element.height * window.globalScaleFactor)+';');
   line.setAttribute('material', 'color: #333333');
 
   scene.appendChild(gateway);
@@ -196,7 +185,7 @@ function handleSequenceFlow(scene, element) {
         <a-entity geometry="primitive: sequenceFlowLine; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #333333"></a-entity>
   */
   const points = element.waypoints.reduce((acc, val) => {
-    return acc += (val.x * globalScaleFactor) + ' ' + (val.y * globalScaleFactor) + ', ';
+    return acc += (val.x * window.globalScaleFactor) + ' ' + (val.y * window.globalScaleFactor) + ', ';
   }, '').slice(0, -2);
 
   const flow = document.createElement('a-entity');
@@ -217,19 +206,19 @@ function handleTask(scene, element) {
   */
 
   const task = document.createElement('a-entity');
-  task.setAttribute('geometry', 'primitive: task; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
+  task.setAttribute('geometry', 'primitive: task; position: ' + (element.x * window.globalScaleFactor) + ' ' + (element.y * window.globalScaleFactor)+'; width: '+element.width * window.globalScaleFactor+'; height: '+element.height * window.globalScaleFactor+';');
   task.setAttribute('material', 'color: #FFFFFF');
 
   const line = document.createElement('a-entity');
-  line.setAttribute('geometry', 'primitive: taskLine; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
+  line.setAttribute('geometry', 'primitive: taskLine; position: ' + (element.x * window.globalScaleFactor) + ' ' + (element.y * window.globalScaleFactor)+'; width: '+element.width * window.globalScaleFactor+'; height: '+element.height * window.globalScaleFactor+';');
   line.setAttribute('material', 'color: #333333');
 
   // text label look-controls
   const name = element.businessObject.name;
   const label = document.createElement('a-entity');
   label.setAttribute('rotation', '-90 90 0');
-  label.setAttribute('text', 'value: ' + name + '; color: black; width: ' + element.width * globalScaleFactor * 1.7 + ';');
-  label.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor));
+  label.setAttribute('text', 'value: ' + name + '; color: black; width: ' + element.width * window.globalScaleFactor * 1.7 + ';');
+  label.setAttribute('position', (element.y * window.globalScaleFactor + element.height / 2 * window.globalScaleFactor) + ' '+(window.layer1)+' ' + -(element.x * window.globalScaleFactor + element.width * window.globalScaleFactor));
   // <a-entity text="value: Hello world; color: black; width: 10;" rotation="-90 0 0"></a-entity>
 
   // human for usertasks
@@ -239,7 +228,7 @@ function handleTask(scene, element) {
     model.setAttribute('obj-model', 'obj: #human-obj;');
     model.setAttribute('scale', '0.2 0.2 0.2');
     model.setAttribute('rotation', '0 90 0');
-    model.setAttribute('position', (element.y * globalScaleFactor + element.height / 10 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 10));
+    model.setAttribute('position', (element.y * window.globalScaleFactor + element.height / 10 * window.globalScaleFactor) + ' '+(window.layer1)+' ' + -(element.x * window.globalScaleFactor + element.width * window.globalScaleFactor / 10));
 
     // scene.appendChild(model);
   }
@@ -251,7 +240,7 @@ function handleTask(scene, element) {
     model.setAttribute('obj-model', 'obj: #computer-obj;');
     model.setAttribute('scale', '0.01 0.01 0.01');
     model.setAttribute('rotation', '0 90 0');
-    model.setAttribute('position', (element.y * globalScaleFactor + element.height / 10 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 10))
+    model.setAttribute('position', (element.y * window.globalScaleFactor + element.height / 10 * window.globalScaleFactor) + ' '+(window.layer1)+' ' + -(element.x * window.globalScaleFactor + element.width * window.globalScaleFactor / 10))
 
     // scene.appendChild(model);
   }

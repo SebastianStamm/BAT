@@ -1,14 +1,3 @@
-const sequenceFlowWidth = window.sequenceFlowWidth;
-const sequenceFlowHeight = window.sequenceFlowHeight;
-const taskOutlineWidth = window.taskOutlineWidth;
-const gatewayOutlineWidth = window.gatewayOutlineWidth;
-const eventOulineWidth = window.eventOulineWidth;
-const globalScaleFactor = window.globalScaleFactor;
-const layer0 = window.layer0;
-const layer1 = window.layer1;
-const layer2 = window.layer2;
-const flowOutlineWidthFactor = window.flowOutlineWidthFactor;
-
 (function() {
 	window.AFRAME.registerComponent( 'collision', {
 		init: function() {
