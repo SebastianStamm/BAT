@@ -63,14 +63,15 @@ AFRAME.registerGeometry('gatewayLine', {
       new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 - sequenceFlowWidth),
       new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 + sequenceFlowWidth),
 
-      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x - taskOutlineWidth),
-      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x - taskOutlineWidth),
-      new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - width / 2 + sequenceFlowWidth),
-      new THREE.Vector3(pos.y + taskOutlineWidth, layer1, -pos.x - width / 2 - sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x - width + taskOutlineWidth),
-      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x - width + taskOutlineWidth),
-      new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - width / 2 - sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height - taskOutlineWidth, layer1, -pos.x - width / 2 + sequenceFlowWidth)
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x),
+      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor),
+
     ];
 
     geometry.faces = [

@@ -31,7 +31,7 @@ function calculateWaypoints(waypoints) {
       // first waypoint, take the normal
       const movingVector = nextWaypoint.clone().sub(waypoint);
       const normal = getVectorNormal(movingVector);
-      const shortNormal = normal.clone().multiplyScalar(.8);
+      const shortNormal = normal.clone().multiplyScalar(flowOutlineWidthFactor);
       return [
         waypoint.clone().add(normal),
         waypoint.clone().sub(normal),
@@ -51,7 +51,7 @@ function calculateWaypoints(waypoints) {
         normal.normalize();
         normal.multiplyScalar(sequenceFlowWidth * 1.5);
 
-        const shortNormal = normal.clone().multiplyScalar(.8);
+        const shortNormal = normal.clone().multiplyScalar(flowOutlineWidthFactor);
 
         if(halfAngle < 0) {
           return [
@@ -72,7 +72,7 @@ function calculateWaypoints(waypoints) {
         // last waypoint, take the normal
         const movingVector = waypoint.clone().sub(previousWaypoint);
         const normal = getVectorNormal(movingVector);
-        const shortNormal = normal.clone().multiplyScalar(.8);
+        const shortNormal = normal.clone().multiplyScalar(flowOutlineWidthFactor);
 
         return [
           waypoint.clone().add(normal),
@@ -131,7 +131,7 @@ function handleModel(viewer) {
     }
 
     if(bo.$instanceOf('bpmn:Event')) {
-      handleEvent(scene, element);
+      handleGateway(scene, element);
       if(bo.$instanceOf('bpmn:StartEvent')) {
         startPosition = element;
       }
