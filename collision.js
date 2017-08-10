@@ -9,8 +9,43 @@
       window.debugObj = this;
 
 			if ( collides() ) {
-				this.el.setAttribute( 'position', this.lastKnownGoodPosition );
-        this.el.components['wasd-controls'].data.acceleration = 0;
+				// check if we can resolve the collision
+				const targetx = this.el.object3D.position.x;
+				const targetz = this.el.object3D.position.z;
+
+				this.el.object3D.position.x = this.lastKnownGoodPosition.x;
+
+				if(collides()) {
+					this.el.object3D.position.x = targetx;
+					this.el.object3D.position.z = this.lastKnownGoodPosition.z;
+
+					if(collides()) {
+						console.log('did not find match');
+						// this.el.object3D.position.x = this.lastKnownGoodPosition.x;
+						this.el.components['wasd-controls'].data.acceleration = 0;
+						this.el.setAttribute( 'position', this.lastKnownGoodPosition );
+					} else {
+						console.log('ofund match');
+						this.lastKnownGoodPosition = {
+							x: this.el.object3D.position.x,
+							y: this.el.object3D.position.y,
+							z: this.el.object3D.position.z
+						};
+
+						this.el.setAttribute( 'position', this.lastKnownGoodPosition );
+						this.el.components['wasd-controls'].data.acceleration = 250;
+					}
+				} else {
+					// found acceptable match
+					console.log('found match');
+					this.lastKnownGoodPosition = {
+						x: this.el.object3D.position.x,
+						y: this.el.object3D.position.y,
+						z: this.el.object3D.position.z
+					};
+					this.el.setAttribute( 'position', this.lastKnownGoodPosition );
+					this.el.components['wasd-controls'].data.acceleration = 250;
+				}
 			} else {
 				this.lastKnownGoodPosition = {
 					x: this.el.object3D.position.x,
