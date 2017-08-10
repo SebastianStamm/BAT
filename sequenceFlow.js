@@ -1,4 +1,4 @@
-window.AFRAME.registerGeometry('sequenceFlow', {
+AFRAME.registerGeometry('sequenceFlow', {
   schema: {
     points: {
       default: ['0 0', '10 10']
@@ -14,7 +14,7 @@ window.AFRAME.registerGeometry('sequenceFlow', {
       return new THREE.Vector2(coordinate[0], coordinate[1]);
     });
 
-    const mappedWaypoints = window.calculateWaypoints(waypoints);
+    const mappedWaypoints = calculateWaypoints(waypoints);
 
     geometry.vertices = [];
     geometry.faces = [];
@@ -23,8 +23,8 @@ window.AFRAME.registerGeometry('sequenceFlow', {
       geometry.vertices.push(
         new THREE.Vector3(waypoint[0].y, 0, -waypoint[0].x),
         new THREE.Vector3(waypoint[1].y, 0, -waypoint[1].x),
-        new THREE.Vector3(waypoint[0].y, window.sequenceFlowHeight, -waypoint[0].x),
-        new THREE.Vector3(waypoint[1].y, window.sequenceFlowHeight, -waypoint[1].x),
+        new THREE.Vector3(waypoint[0].y, sequenceFlowHeight, -waypoint[0].x),
+        new THREE.Vector3(waypoint[1].y, sequenceFlowHeight, -waypoint[1].x),
         new THREE.Vector3(waypoint[2].y, 0, -waypoint[2].x),
         new THREE.Vector3(waypoint[3].y, 0, -waypoint[3].x),
       );
@@ -40,8 +40,8 @@ window.AFRAME.registerGeometry('sequenceFlow', {
         // geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 7 + faceIndexOffset, 3 + faceIndexOffset));
         // geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 7 + faceIndexOffset, 9 + faceIndexOffset));
 
-        window.addSpace(geometry.vertices[4 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[5 + faceIndexOffset]);
-        window.addSpace(geometry.vertices[5 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[11 + faceIndexOffset]);
+        addSpace(geometry.vertices[4 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[5 + faceIndexOffset]);
+        addSpace(geometry.vertices[5 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[11 + faceIndexOffset]);
       }
     });
 
@@ -52,7 +52,7 @@ window.AFRAME.registerGeometry('sequenceFlow', {
 });
 
 
-window.AFRAME.registerGeometry('sequenceFlowLine', {
+AFRAME.registerGeometry('sequenceFlowLine', {
   schema: {
     points: {
       default: ['0 0', '10 10']
@@ -68,7 +68,7 @@ window.AFRAME.registerGeometry('sequenceFlowLine', {
       return new THREE.Vector2(coordinate[0], coordinate[1]);
     });
 
-    const mappedWaypoints = window.calculateWaypoints(waypoints);
+    const mappedWaypoints = calculateWaypoints(waypoints);
 
     geometry.vertices = [];
     geometry.faces = [];
@@ -95,3 +95,23 @@ window.AFRAME.registerGeometry('sequenceFlowLine', {
     this.geometry = geometry;
   }
 });
+
+function handleSequenceFlow(scene, element) {
+  /*    <a-entity geometry="primitive: sequenceFlow; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #FFFFFF"></a-entity>
+        <a-entity geometry="primitive: sequenceFlowLine; points:0 0, 0 5, 0 10, 5 10, 10 10, 10 15;" material="color: #333333"></a-entity>
+  */
+  const points = element.waypoints.reduce((acc, val) => {
+    return acc += (val.x * globalScaleFactor) + ' ' + (val.y * globalScaleFactor) + ', ';
+  }, '').slice(0, -2);
+
+  const flow = document.createElement('a-entity');
+  flow.setAttribute('geometry', 'primitive: sequenceFlow; points:' + points + ';');
+  flow.setAttribute('material', 'color: #FFFFFF; side: double;');
+
+  const line = document.createElement('a-entity');
+  line.setAttribute('geometry', 'primitive: sequenceFlowLine; points:' + points + ';');
+  line.setAttribute('material', 'color: #333333');
+
+  scene.appendChild(flow);
+  scene.appendChild(line);
+}

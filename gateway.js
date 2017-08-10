@@ -1,4 +1,4 @@
-window.AFRAME.registerGeometry('gateway', {
+AFRAME.registerGeometry('gateway', {
   schema: {
     position: {
       default: '0 0'
@@ -13,14 +13,14 @@ window.AFRAME.registerGeometry('gateway', {
     const height = parseFloat(data.height);
 
     geometry.vertices = [
-      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth, 0, -pos.x),
-      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth, 0, -pos.x),
-      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 + window.sequenceFlowWidth),
-      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 - window.sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth, 0, -pos.x - width),
-      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth, 0, -pos.x - width),
-      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 - window.sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 + window.sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 + sequenceFlowWidth),
     ];
 
     geometry.faces = [
@@ -32,12 +32,12 @@ window.AFRAME.registerGeometry('gateway', {
       new THREE.Face3(0,7,6)
     ];
 
-    window.addSpace(geometry.vertices[0], geometry.vertices[2], geometry.vertices[1]);
-    window.addSpace(geometry.vertices[0], geometry.vertices[3], geometry.vertices[2]);
-    window.addSpace(geometry.vertices[0], geometry.vertices[4], geometry.vertices[3]);
-    window.addSpace(geometry.vertices[0], geometry.vertices[5], geometry.vertices[4]);
-    window.addSpace(geometry.vertices[0], geometry.vertices[6], geometry.vertices[5]);
-    window.addSpace(geometry.vertices[0], geometry.vertices[7], geometry.vertices[6]);
+    addSpace(geometry.vertices[0], geometry.vertices[2], geometry.vertices[1]);
+    addSpace(geometry.vertices[0], geometry.vertices[3], geometry.vertices[2]);
+    addSpace(geometry.vertices[0], geometry.vertices[4], geometry.vertices[3]);
+    addSpace(geometry.vertices[0], geometry.vertices[5], geometry.vertices[4]);
+    addSpace(geometry.vertices[0], geometry.vertices[6], geometry.vertices[5]);
+    addSpace(geometry.vertices[0], geometry.vertices[7], geometry.vertices[6]);
 
 
     geometry.computeFaceNormals();
@@ -46,7 +46,7 @@ window.AFRAME.registerGeometry('gateway', {
   }
 });
 
-window.AFRAME.registerGeometry('gatewayLine', {
+AFRAME.registerGeometry('gatewayLine', {
   schema: {
     position: {
       default: '0 0'
@@ -62,23 +62,23 @@ window.AFRAME.registerGeometry('gatewayLine', {
     const height = parseFloat(data.height);
 
     geometry.vertices = [
-      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth, window.layer1, -pos.x),
-      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth, window.layer1, -pos.x),
-      new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth),
-      new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth, window.layer1, -pos.x - width),
-      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth, window.layer1, -pos.x - width),
-      new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth),
-      new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x),
+      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 + sequenceFlowWidth),
 
-      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x),
-      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x),
-      new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor),
-      new THREE.Vector3(pos.y, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor),
-      new THREE.Vector3(pos.y + height / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x - width),
-      new THREE.Vector3(pos.y + height / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor, window.layer1, -pos.x - width),
-      new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 - window.sequenceFlowWidth * window.flowOutlineWidthFactor),
-      new THREE.Vector3(pos.y + height, window.layer1, -pos.x - width / 2 + window.sequenceFlowWidth * window.flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x),
+      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth * flowOutlineWidthFactor, layer1, -pos.x - width),
+      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 - sequenceFlowWidth * flowOutlineWidthFactor),
+      new THREE.Vector3(pos.y + height, layer1, -pos.x - width / 2 + sequenceFlowWidth * flowOutlineWidthFactor),
 
     ];
 
@@ -98,3 +98,22 @@ window.AFRAME.registerGeometry('gatewayLine', {
     this.geometry = geometry;
   }
 });
+
+function handleGateway(scene, element) {
+  /*  <a-entity geometry="primitive: gateway; position: 8 3;" material="color: #FFFFFF;"></a-entity>
+      <a-entity geometry="primitive: gatewayLine; position: 8 3;" material="color: #333333"></a-entity>
+  */
+
+  const posOffset = element.width / 2 * globalScaleFactor;
+
+  const gateway = document.createElement('a-entity');
+  gateway.setAttribute('geometry', 'primitive: gateway; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
+  gateway.setAttribute('material', 'color: #FFFFFF');
+
+  const line = document.createElement('a-entity');
+  line.setAttribute('geometry', 'primitive: gatewayLine; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
+  line.setAttribute('material', 'color: #333333');
+
+  scene.appendChild(gateway);
+  scene.appendChild(line);
+}

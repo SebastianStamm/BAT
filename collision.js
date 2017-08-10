@@ -1,8 +1,7 @@
 (function() {
-	window.AFRAME.registerComponent( 'collision', {
+	AFRAME.registerComponent( 'collision', {
 		init: function() {
       console.log('initializing collision');
-			window.openSpaces = window.openSpaces || [];
 		},
 
 		tick: function () {
