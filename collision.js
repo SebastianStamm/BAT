@@ -1,7 +1,6 @@
 (function() {
 	AFRAME.registerComponent( 'collision', {
 		init: function() {
-      console.log('initializing collision');
 		},
 
 		tick: function () {
@@ -20,12 +19,10 @@
 					this.el.object3D.position.z = this.lastKnownGoodPosition.z;
 
 					if(collides()) {
-						console.log('did not find match');
 						// this.el.object3D.position.x = this.lastKnownGoodPosition.x;
 						this.el.components['wasd-controls'].data.acceleration = 0;
 						this.el.setAttribute( 'position', this.lastKnownGoodPosition );
 					} else {
-						console.log('ofund match');
 						this.lastKnownGoodPosition = {
 							x: this.el.object3D.position.x,
 							y: this.el.object3D.position.y,
@@ -37,7 +34,6 @@
 					}
 				} else {
 					// found acceptable match
-					console.log('found match');
 					this.lastKnownGoodPosition = {
 						x: this.el.object3D.position.x,
 						y: this.el.object3D.position.y,

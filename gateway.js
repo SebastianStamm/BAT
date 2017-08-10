@@ -2,6 +2,12 @@ AFRAME.registerGeometry('gateway', {
   schema: {
     position: {
       default: '0 0'
+    },
+    width: {
+      default: '10'
+    },
+    height: {
+      default: '10'
     }
   },
 
@@ -85,6 +91,12 @@ AFRAME.registerGeometry('gatewayLine', {
   schema: {
     position: {
       default: '0 0'
+    },
+    width: {
+      default: '10'
+    },
+    height: {
+      default: '10'
     }
   },
 
@@ -158,7 +170,6 @@ function handleGateway(scene, element) {
     case 'bpmn:ExclusiveGateway': img = 'exclusive'; break;
     case 'bpmn:ParallelGateway': img = 'parallel'; break;
   }
-  console.log(element);
   const label = document.createElement('a-image');
   label.setAttribute('src', 'img/'+img+'.png');
   label.setAttribute('position', (element.y * globalScaleFactor + element.height * globalScaleFactor / 2) + ' ' + layer1 + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
@@ -168,4 +179,39 @@ function handleGateway(scene, element) {
   scene.appendChild(gateway);
   scene.appendChild(line);
   scene.appendChild(label);
+
+  const openExits = findOpenExits(element);
+
+  if(openExits.n) {
+    const label = document.createElement('a-image');
+    label.setAttribute('src', 'img/'+img+'.png');
+    label.setAttribute('position', (element.y * globalScaleFactor + layer1) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
+    label.setAttribute('rotation', '0 90 0');
+    label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
+    scene.appendChild(label);
+  }
+  if(openExits.s) {
+    const label = document.createElement('a-image');
+    label.setAttribute('src', 'img/'+img+'.png');
+    label.setAttribute('position', ((element.y + element.height) * globalScaleFactor - layer1) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
+    label.setAttribute('rotation', '0 90 0');
+    label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
+    scene.appendChild(label);
+  }
+  if(openExits.w) {
+    const label = document.createElement('a-image');
+    label.setAttribute('src', 'img/'+img+'.png');
+    label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor + layer1));
+    label.setAttribute('rotation', '0 0 0');
+    label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
+    scene.appendChild(label);
+  }
+  if(openExits.e) {
+    const label = document.createElement('a-image');
+    label.setAttribute('src', 'img/'+img+'.png');
+    label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (roomHeight / 4) + ' ' + -((element.x + element.width) * globalScaleFactor - layer1));
+    label.setAttribute('rotation', '0 0 0');
+    label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
+    scene.appendChild(label);
+  }
 }

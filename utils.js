@@ -173,3 +173,42 @@ function handleModel(viewer) {
 
   document.body.appendChild(scene);
 }
+
+
+function findOpenExits(element) {
+  let n=s=w=e = true;
+
+  element.incoming.forEach(incoming => {
+    const lastWp = incoming.waypoints[incoming.waypoints.length -1];
+    if(lastWp.x === element.x) {
+      w = false;
+    }
+    if(lastWp.x === element.x + element.width) {
+      e = false;
+    }
+    if(lastWp.y === element.y) {
+      n = false;
+    }
+    if(lastWp.y === element.y + element.height) {
+      s = false;
+    }
+  });
+
+  element.outgoing.forEach(outgoing => {
+    const lastWp = outgoing.waypoints[0];
+    if(lastWp.x === element.x) {
+      w = false;
+    }
+    if(lastWp.x === element.x + element.width) {
+      e = false;
+    }
+    if(lastWp.y === element.y) {
+      n = false;
+    }
+    if(lastWp.y === element.y + element.height) {
+      s = false;
+    }
+  });
+
+  return {n,s,w,e};
+}
