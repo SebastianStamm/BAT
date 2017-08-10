@@ -176,37 +176,37 @@ function handleModel(viewer) {
 
 
 function findOpenExits(element) {
-  let n=s=w=e = true;
+  let n=s=w=e = false;
 
   element.incoming.forEach(incoming => {
     const lastWp = incoming.waypoints[incoming.waypoints.length -1];
     if(lastWp.x === element.x) {
-      w = false;
+      w = incoming.source.businessObject.name;
     }
     if(lastWp.x === element.x + element.width) {
-      e = false;
+      e = incoming.source.businessObject.name;
     }
     if(lastWp.y === element.y) {
-      n = false;
+      n = incoming.source.businessObject.name;
     }
     if(lastWp.y === element.y + element.height) {
-      s = false;
+      s = incoming.source.businessObject.name;
     }
   });
 
   element.outgoing.forEach(outgoing => {
     const lastWp = outgoing.waypoints[0];
     if(lastWp.x === element.x) {
-      w = false;
+      w = outgoing.target.businessObject.name;
     }
     if(lastWp.x === element.x + element.width) {
-      e = false;
+      e = outgoing.target.businessObject.name;
     }
     if(lastWp.y === element.y) {
-      n = false;
+      n = outgoing.target.businessObject.name;
     }
     if(lastWp.y === element.y + element.height) {
-      s = false;
+      s = outgoing.target.businessObject.name;
     }
   });
 

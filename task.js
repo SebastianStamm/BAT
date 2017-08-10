@@ -219,8 +219,8 @@ function handleTask(scene, element) {
   const name = element.businessObject.name;
   const label = document.createElement('a-entity');
   label.setAttribute('rotation', '-90 90 0');
-  label.setAttribute('text', 'value: ' + name + '; color: black; width: ' + element.width * globalScaleFactor * 1.7 + ';');
-  label.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor));
+  label.setAttribute('text', 'value: '+name+'; color: black; width: ' + element.width * globalScaleFactor + '; align: center;');
+  label.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
   // <a-entity text="value: Hello world; color: black; width: 10;" rotation="-90 0 0"></a-entity>
 
   // human for usertasks
@@ -254,7 +254,7 @@ function handleTask(scene, element) {
   // close exits
   const openExits = findOpenExits(element);
 
-  if(openExits.n) {
+  if(openExits.n === false) {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/end.png');
     label.setAttribute('position', (element.y * globalScaleFactor + layer1) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
@@ -262,7 +262,7 @@ function handleTask(scene, element) {
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
   }
-  if(openExits.s) {
+  if(openExits.s === false) {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/end.png');
     label.setAttribute('position', ((element.y + element.height) * globalScaleFactor - layer1) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
@@ -270,7 +270,7 @@ function handleTask(scene, element) {
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
   }
-  if(openExits.w) {
+  if(openExits.w === false) {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/end.png');
     label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor + layer1));
@@ -278,13 +278,63 @@ function handleTask(scene, element) {
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
   }
-  if(openExits.e) {
+  if(openExits.e === false) {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/end.png');
     label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (roomHeight / 4) + ' ' + -((element.x + element.width) * globalScaleFactor - layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
+  }
+
+  // add labels to next stuff
+  if(openExits.e) {
+    const toLabel = document.createElement('a-entity');
+    toLabel.setAttribute('rotation', '0 0 0');
+    toLabel.setAttribute('text', 'value: To; color: black; width: 10; align: center;');
+    toLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 5 ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor - layer1));
+    scene.appendChild(toLabel);
+    const nameLabel = document.createElement('a-entity');
+    nameLabel.setAttribute('rotation', '0 0 0');
+    nameLabel.setAttribute('text', 'value: '+openExits.e+'; color: black; width: 20; align: center;');
+    nameLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 4 ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor - layer1));
+    scene.appendChild(nameLabel);
+  }
+  if(openExits.w) {
+    const toLabel = document.createElement('a-entity');
+    toLabel.setAttribute('rotation', '0 180 0');
+    toLabel.setAttribute('text', 'value: To; color: black; width: 10; align: center;');
+    toLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 5 ' + -(element.x * globalScaleFactor + layer1));
+    scene.appendChild(toLabel);
+    const nameLabel = document.createElement('a-entity');
+    nameLabel.setAttribute('rotation', '0 180 0');
+    nameLabel.setAttribute('text', 'value: '+openExits.w+'; color: black; width: 20; align: center;');
+    nameLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 4 ' + -(element.x * globalScaleFactor + layer1));
+    scene.appendChild(nameLabel);
+  }
+  if(openExits.n) {
+    const toLabel = document.createElement('a-entity');
+    toLabel.setAttribute('rotation', '0 90 0');
+    toLabel.setAttribute('text', 'value: To; color: black; width: 10; align: center;');
+    toLabel.setAttribute('position', (element.y * globalScaleFactor + layer1) + ' 5 ' + -((element.x + element.width / 2) * globalScaleFactor));
+    scene.appendChild(toLabel);
+    const nameLabel = document.createElement('a-entity');
+    nameLabel.setAttribute('rotation', '0 90 0');
+    nameLabel.setAttribute('text', 'value: '+openExits.n+'; color: black; width: 20; align: center;');
+    nameLabel.setAttribute('position', (element.y * globalScaleFactor + layer1) + ' 4 ' + -((element.x + element.width / 2) * globalScaleFactor));
+    scene.appendChild(nameLabel);
+  }
+  if(openExits.s) {
+    const toLabel = document.createElement('a-entity');
+    toLabel.setAttribute('rotation', '0 -90 0');
+    toLabel.setAttribute('text', 'value: To; color: black; width: 10; align: center;');
+    toLabel.setAttribute('position', ((element.y + element.height) * globalScaleFactor - layer1) + ' 5 ' + -((element.x + element.width / 2) * globalScaleFactor));
+    scene.appendChild(toLabel);
+    const nameLabel = document.createElement('a-entity');
+    nameLabel.setAttribute('rotation', '0 -90 0');
+    nameLabel.setAttribute('text', 'value: '+openExits.s+'; color: black; width: 20; align: center;');
+    nameLabel.setAttribute('position', ((element.y + element.height) * globalScaleFactor - layer1) + ' 4 ' + -((element.x + element.width / 2) * globalScaleFactor));
+    scene.appendChild(nameLabel);
   }
 
 }
