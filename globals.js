@@ -10,3 +10,6 @@ window.layer2 = 0.02;
 window.flowOutlineWidthFactor = .8;
 window.roomHeight = 7.5;
 window.gatewayHeight = 5;
+window.availableDoors = [];
+window.doorThreshold = 50;
+window.doorOpacity = .85;

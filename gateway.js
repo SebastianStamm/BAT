@@ -185,7 +185,7 @@ function handleGateway(scene, element) {
   if(openExits.n === false) {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/door.png');
-    label.setAttribute('position', (element.y * globalScaleFactor - layer1) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
+    label.setAttribute('position', (element.y * globalScaleFactor - layer1) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
     label.setAttribute('rotation', '0 90 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
@@ -193,7 +193,7 @@ function handleGateway(scene, element) {
   if(openExits.s === false) {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/door.png');
-    label.setAttribute('position', ((element.y + element.height) * globalScaleFactor + layer1) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
+    label.setAttribute('position', ((element.y + element.height) * globalScaleFactor + layer1) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
     label.setAttribute('rotation', '0 90 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
@@ -201,7 +201,7 @@ function handleGateway(scene, element) {
   if(openExits.w === false) {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/door.png');
-    label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (roomHeight / 4) + ' ' + -(element.x * globalScaleFactor - layer1));
+    label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor - layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
@@ -209,7 +209,7 @@ function handleGateway(scene, element) {
   if(openExits.e === false) {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/door.png');
-    label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (roomHeight / 4) + ' ' + -((element.x + element.width) * globalScaleFactor + layer1));
+    label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (sequenceFlowHeight / 2) + ' ' + -((element.x + element.width) * globalScaleFactor + layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
