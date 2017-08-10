@@ -8,3 +8,4 @@ window.layer0 = 0;
 window.layer1 = 0.001;
 window.layer2 = 0.002;
 window.flowOutlineWidthFactor = .8;
+window.roomHeight = 7.5;

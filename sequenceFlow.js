@@ -33,12 +33,12 @@ AFRAME.registerGeometry('sequenceFlow', {
         const faceIndexOffset = (idx - 1) * 6;
         geometry.faces.push(new THREE.Face3(4 + faceIndexOffset, 10+ faceIndexOffset, 5 + faceIndexOffset));
         geometry.faces.push(new THREE.Face3(5 + faceIndexOffset, 10+ faceIndexOffset, 11+ faceIndexOffset));
-        // geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 3 + faceIndexOffset, 8 + faceIndexOffset));
-        // geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 9 + faceIndexOffset, 8 + faceIndexOffset));
-        // geometry.faces.push(new THREE.Face3(0 + faceIndexOffset, 2 + faceIndexOffset, 6 + faceIndexOffset));
-        // geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 8 + faceIndexOffset, 6 + faceIndexOffset));
-        // geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 7 + faceIndexOffset, 3 + faceIndexOffset));
-        // geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 7 + faceIndexOffset, 9 + faceIndexOffset));
+        geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 3 + faceIndexOffset, 8 + faceIndexOffset));
+        geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 9 + faceIndexOffset, 8 + faceIndexOffset));
+        geometry.faces.push(new THREE.Face3(0 + faceIndexOffset, 2 + faceIndexOffset, 6 + faceIndexOffset));
+        geometry.faces.push(new THREE.Face3(2 + faceIndexOffset, 8 + faceIndexOffset, 6 + faceIndexOffset));
+        geometry.faces.push(new THREE.Face3(1 + faceIndexOffset, 7 + faceIndexOffset, 3 + faceIndexOffset));
+        geometry.faces.push(new THREE.Face3(3 + faceIndexOffset, 7 + faceIndexOffset, 9 + faceIndexOffset));
 
         addSpace(geometry.vertices[4 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[5 + faceIndexOffset]);
         addSpace(geometry.vertices[5 + faceIndexOffset], geometry.vertices[10 + faceIndexOffset], geometry.vertices[11 + faceIndexOffset]);
