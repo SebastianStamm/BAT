@@ -21,6 +21,24 @@ AFRAME.registerGeometry('gateway', {
       new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x - width),
       new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 - sequenceFlowWidth),
       new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 + sequenceFlowWidth),
+
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, sequenceFlowHeight, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, sequenceFlowHeight, -pos.x),
+      new THREE.Vector3(pos.y, sequenceFlowHeight, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, sequenceFlowHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, sequenceFlowHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, sequenceFlowHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height, sequenceFlowHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, sequenceFlowHeight, -pos.x - width / 2 + sequenceFlowWidth),
+
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, gatewayHeight, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, gatewayHeight, -pos.x),
+      new THREE.Vector3(pos.y, gatewayHeight, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, gatewayHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, gatewayHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, gatewayHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height, gatewayHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, gatewayHeight, -pos.x - width / 2 + sequenceFlowWidth)
     ];
 
     geometry.faces = [
@@ -29,7 +47,24 @@ AFRAME.registerGeometry('gateway', {
       new THREE.Face3(0,4,3),
       new THREE.Face3(0,5,4),
       new THREE.Face3(0,6,5),
-      new THREE.Face3(0,7,6)
+      new THREE.Face3(0,7,6),
+
+      new THREE.Face3(10, 11, 19),
+      new THREE.Face3(10, 19, 18),
+      new THREE.Face3(3, 4, 20),
+      new THREE.Face3(3, 20, 19),
+      new THREE.Face3(12, 13, 21),
+      new THREE.Face3(12, 21, 20),
+      new THREE.Face3(5, 6, 22),
+      new THREE.Face3(5, 22, 21),
+      new THREE.Face3(14, 15, 23),
+      new THREE.Face3(14, 23, 22),
+      new THREE.Face3(7, 0, 16),
+      new THREE.Face3(7, 16, 23),
+      new THREE.Face3(8, 9, 17),
+      new THREE.Face3(8, 17, 16),
+      new THREE.Face3(1, 2, 18),
+      new THREE.Face3(1, 18, 17)
     ];
 
     addSpace(geometry.vertices[0], geometry.vertices[2], geometry.vertices[1]);

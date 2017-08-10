@@ -9,3 +9,4 @@ window.layer1 = 0.001;
 window.layer2 = 0.002;
 window.flowOutlineWidthFactor = .8;
 window.roomHeight = 7.5;
+window.gatewayHeight = 5;
