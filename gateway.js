@@ -149,6 +149,23 @@ function handleGateway(scene, element) {
   line.setAttribute('geometry', 'primitive: gatewayLine; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
   line.setAttribute('material', 'color: #333333');
 
+  // <a-image src="#my-image"></a-image>
+  let img;
+  switch(element.type) {
+    case 'bpmn:StartEvent': img = 'start'; break;
+    case 'bpmn:EndEvent': img = 'end'; break;
+    case 'bpmn:IntermediateEvent': img = 'intermediate'; break;
+    case 'bpmn:ExclusiveGateway': img = 'exclusive'; break;
+    case 'bpmn:ParallelGateway': img = 'parallel'; break;
+  }
+  console.log(element);
+  const label = document.createElement('a-image');
+  label.setAttribute('src', 'img/'+img+'.png');
+  label.setAttribute('position', (element.y * globalScaleFactor + element.height * globalScaleFactor / 2) + ' ' + layer1 + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
+  label.setAttribute('rotation', '90 90 0');
+  label.setAttribute('scale', '3 3 3');
+
   scene.appendChild(gateway);
   scene.appendChild(line);
+  scene.appendChild(label);
 }
