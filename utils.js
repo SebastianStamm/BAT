@@ -157,5 +157,19 @@ function handleModel(viewer) {
   camera.setAttribute('collision', true);
   scene.appendChild(camera);
 
+  // setup lights
+  const ambientLight = document.createElement('a-entity');
+  ambientLight.setAttribute('light', 'type: ambient; color: #BBB;');
+  scene.appendChild(ambientLight);
+
+  const movingLight = document.createElement('a-entity');
+  movingLight.setAttribute('light', 'type: point; color: #FFF; intensity: 0.2;');
+  camera.appendChild(movingLight);
+
+  const directionalLight = document.createElement('a-entity');
+  directionalLight.setAttribute('light', 'type: directional; color: #FFF; intensity: 0.6');
+  directionalLight.setAttribute('position', '0 1 0');
+  scene.appendChild(directionalLight);
+
   document.body.appendChild(scene);
 }
