@@ -89,6 +89,10 @@ AFRAME.registerGeometry('task', {
       new THREE.Face3(21, 22, 11),
       new THREE.Face3(22, 2, 11),
       new THREE.Face3(23, 2, 22),
+
+      // roof
+      // new THREE.Face3(11, 10, 4),
+      // new THREE.Face3(11, 4, 5),
     ];
 
     addSpace(geometry.vertices[0], geometry.vertices[1], geometry.vertices[2]);

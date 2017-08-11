@@ -70,7 +70,14 @@ AFRAME.registerGeometry('gateway', {
       new THREE.Face3(8, 9, 17),
       new THREE.Face3(8, 17, 16),
       new THREE.Face3(1, 2, 18),
-      new THREE.Face3(1, 18, 17)
+      new THREE.Face3(1, 18, 17),
+
+      new THREE.Face3(16,17,18),
+      new THREE.Face3(16,18,19),
+      new THREE.Face3(16,19,20),
+      new THREE.Face3(16,20,21),
+      new THREE.Face3(16,21,22),
+      new THREE.Face3(16,22,23)
     ];
 
     addSpace(geometry.vertices[0], geometry.vertices[2], geometry.vertices[1]);
@@ -169,6 +176,7 @@ function handleGateway(scene, element) {
     case 'bpmn:IntermediateEvent': img = 'intermediate'; break;
     case 'bpmn:ExclusiveGateway': img = 'exclusive'; break;
     case 'bpmn:ParallelGateway': img = 'parallel'; break;
+    default: img = 'px'; break;
   }
   const label = document.createElement('a-image');
   label.setAttribute('src', 'img/'+img+'.png');
@@ -182,37 +190,57 @@ function handleGateway(scene, element) {
 
   const openExits = findOpenExits(element);
 
-  if(openExits.n === false) {
+  {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/door.png');
     label.setAttribute('position', (element.y * globalScaleFactor - layer1) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
     label.setAttribute('rotation', '0 90 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
+    if(openExits.n !== false) {
+      label.setAttribute('opacity', doorOpacity);
+      label.setAttribute('transparent', 'true');
+      availableDoors.push(label);
+    }
   }
-  if(openExits.s === false) {
+  {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/door.png');
     label.setAttribute('position', ((element.y + element.height) * globalScaleFactor + layer1) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
     label.setAttribute('rotation', '0 90 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
+    if(openExits.s !== false) {
+      label.setAttribute('opacity', doorOpacity);
+      label.setAttribute('transparent', 'true');
+      availableDoors.push(label);
+    }
   }
-  if(openExits.w === false) {
+  {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/door.png');
     label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor - layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
+    if(openExits.w !== false) {
+      label.setAttribute('opacity', doorOpacity);
+      label.setAttribute('transparent', 'true');
+      availableDoors.push(label);
+    }
   }
-  if(openExits.e === false) {
+  {
     const label = document.createElement('a-image');
     label.setAttribute('src', 'img/door.png');
     label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (sequenceFlowHeight / 2) + ' ' + -((element.x + element.width) * globalScaleFactor + layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     scene.appendChild(label);
+    if(openExits.e !== false) {
+      label.setAttribute('opacity', doorOpacity);
+      label.setAttribute('transparent', 'true');
+      availableDoors.push(label);
+    }
   }
 
   // add labels to next stuff
