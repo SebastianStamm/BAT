@@ -121,8 +121,20 @@ function handleModel(viewer) {
   const data = [];
   const elementRegistry = viewer.get('elementRegistry');
 
+  let min = [Infinity, Infinity];
+  let max = [-Infinity, -Infinity];
+
   elementRegistry.forEach(element => {
     const bo = element.businessObject;
+
+    if(typeof element.x === 'number') {
+      min[0] = Math.min(min[0], element.x);
+      min[1] = Math.min(min[1], element.y);
+      max[0] = Math.max(max[0], element.x + element.width);
+      max[1] = Math.max(max[1], element.y + element.height);
+    }
+
+
     if(element.type === 'label') {
       return;
     }
@@ -172,6 +184,36 @@ function handleModel(viewer) {
   scene.appendChild(directionalLight);
 
   document.body.appendChild(scene);
+
+
+  // setup mobile cursor
+  if(BATmobile) {
+    /*
+    <a-entity cursor="fuse: true; fuseTimeout: 500"
+          position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+          material="color: black; shader: flat">
+    </a-entity>
+    */
+
+    const cursor = document.createElement('a-entity');
+    cursor.setAttribute('position', '0 0 -1');
+    cursor.setAttribute('geometry', 'primitive: ring; radiusInner: 0.02; radiusOuter: 0.03;');
+    cursor.setAttribute('material', 'color: black; shader: flat');
+
+    camera.appendChild(cursor);
+    camera.setAttribute('gaze-control', true);
+
+    // <a-entity raycaster="objects: .collidable" position="0 -0.9 0" rotation="90 0 0"></a-entity>
+    const raycaster = document.createElement('a-entity');
+    raycaster.setAttribute('raycaster', true);
+    raycaster.setAttribute('direction', '0 0 -1');
+
+    camera.appendChild(raycaster);
+  }
+
+  window.BATscene = scene;
+  window.BATcamera = camera;
 }
 
 
