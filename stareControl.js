@@ -8,12 +8,9 @@ AFRAME.registerComponent('gaze-control', {
     this.el.addEventListener('raycaster-intersection', function (evt) {
       const pt = evt.detail.intersections[0].point;
 
-      // console.log(distanceBetween(lastHit, pt));
-      if(distanceBetween(lastHit, pt) < 0.03) {
-        // console.log('steady');
+      if(distanceBetween(lastHit, pt) < movementSensitivity) {
         fuse++;
       } else {
-        // console.log('too fast');
         fuse = 0;
       }
 

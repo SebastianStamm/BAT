@@ -13,3 +13,4 @@ window.gatewayHeight = 5;
 window.availableDoors = [];
 window.doorThreshold = 50;
 window.doorOpacity = .85;
+window.movementSensitivity = 0.05;
