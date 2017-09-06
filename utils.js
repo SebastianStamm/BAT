@@ -215,34 +215,35 @@ function handleModel(viewer) {
   if(BATVR) {
     //teleport-controls vive-controls="hand: left"
     const cursor = document.createElement('a-entity');
-    cursor.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; curveNumberPoints: 120; collisionEntities: a-entity');
+    cursor.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; curveNumberPoints: 150; collisionEntities: a-entity; curveMissColor: #99ff99');
     cursor.setAttribute('oculus-touch-controls', 'hand: right');
 
     scene.appendChild(cursor);
 
-    const startPosX = (startPosition.y * globalScaleFactor + posOffset);
-    const startPosY = (-startPosition.x * globalScaleFactor - posOffset);
-    window.setTimeout(() => {
-      console.log('camera position', camera.getAttribute('position'));
-
-      var camPosition = new THREE.Vector3(0,0,0);
-      camera.setAttribute('position', startPosX + ' 0 ' + startPosY);
-      var hands = document.querySelectorAll('a-entity[tracked-controls]');
-      for (var i = 0; i < hands.length; i++) {
-        var position = hands[i].getAttribute('position');
-        var pos = new THREE.Vector3().copy(position);
-        var diff = camPosition.clone().sub(pos);
-        var newPosition = new THREE.Vector3(startPosX, 0, startPosY).clone().sub(diff);
-        console.log('new position', newPosition);
-        hands[i].setAttribute('position', newPosition);
-      }
-      console.log('found hands', hands);
-    }, 200);
   }
 
+  window.startPosition = startPosition;
   window.BATscene = scene;
   window.BATcamera = camera;
 }
+
+document.addEventListener('keydown', evt => {
+  if(evt.key === 'k') {
+    const posOffset = startPosition.width / 2 * globalScaleFactor;
+    const startPosX = (startPosition.y * globalScaleFactor + posOffset);
+    const startPosY = (-startPosition.x * globalScaleFactor - posOffset);
+    var camPosition = new THREE.Vector3().copy(BATcamera.getAttribute('position'));
+    BATcamera.setAttribute('position', startPosX + ' 1.6 ' + startPosY);
+    var hands = document.querySelectorAll('a-entity[tracked-controls]');
+    for (var i = 0; i < hands.length; i++) {
+      var position = hands[i].getAttribute('position');
+      var pos = new THREE.Vector3().copy(position);
+      var diff = camPosition.clone().sub(pos);
+      var newPosition = new THREE.Vector3(startPosX, 1.6, startPosY).clone().sub(diff);
+      hands[i].setAttribute('position', newPosition);
+    }
+  };
+});
 
 
 function findOpenExits(element) {
