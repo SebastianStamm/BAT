@@ -3,9 +3,50 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 <title>BAT Controller</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.css">
 </head>
-<body style="margin: 0; background: rgb(25,25,25);">
-<button id="resetButton">Reset Player Position</button>
+<body style="padding-top: 3rem;">
+    <div class="ui text container">
+        <h1 class="ui center aligned grey header">B.A.T Controller</h1>
+        <div class="ui two column grid">
+            <div class="center aligned row">
+                <div class="column">
+                    <div id="resetButton" class="ui link card" style="width: 100%">
+                        <div class="content"><i aria-hidden="true" class="huge undo icon"></i></div>
+                        <div class="content">Reset Player Position</div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui link card" style="width: 100%">
+                        <div class="content"><i aria-hidden="true" class="huge level up icon"></i></div>
+                        <div class="content">Update BPMN Model</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui three column grid">
+            <div class="center aligned row">
+                <div class="column">
+                    <button class="big active toggle fluid basic labeled icon ui button">
+                        <i class="game icon"></i>
+                        VR Content
+                    </button>
+                </div>
+                <div class="column">
+                    <button class="big toggle fluid basic labeled icon ui button">
+                        <i class="image icon"></i>
+                        Diagram
+                    </button>
+                </div>
+                <div class="column">
+                    <button class="big toggle fluid basic labeled icon ui button">
+                        <i class="lightning icon"></i>
+                        Splash
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 <script type="application/javascript">
   let connected = false;
 

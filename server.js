@@ -14,10 +14,6 @@ let controller = null;
 let player = null;
 
 wss.on('connection', function connection(ws) {
-//   const location = url.parse(ws.upgradeReq.url, true);
-  // You might use location.query.access_token to authenticate or share sessions
-  // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
-
   ws.on('close', function close() {
     if(controller === ws && player) {
         player.send('DISCONNECTED');
