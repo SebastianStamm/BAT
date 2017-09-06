@@ -166,7 +166,7 @@ function handleModel(viewer) {
   camera.setAttribute('look-controls', true);
   camera.setAttribute('wasd-controls', 'acceleration: 250');
   // camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
-  // camera.setAttribute('collision', true);
+  camera.setAttribute('collision', true);
   scene.appendChild(camera);
 
   // setup lights
@@ -213,13 +213,17 @@ function handleModel(viewer) {
   }
 
   if(BATVR) {
-    //teleport-controls vive-controls="hand: left"
-    const cursor = document.createElement('a-entity');
-    cursor.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; curveNumberPoints: 150; collisionEntities: a-entity; curveMissColor: #99ff99');
-    cursor.setAttribute('oculus-touch-controls', 'hand: right');
+    const cursor1 = document.createElement('a-entity');
+    cursor1.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; curveNumberPoints: 150; collisionEntities: a-entity; curveMissColor: #99ff99');
+    cursor1.setAttribute('oculus-touch-controls', 'hand: right');
 
-    scene.appendChild(cursor);
+    scene.appendChild(cursor1);
 
+    const cursor2 = document.createElement('a-entity');
+    cursor2.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; curveNumberPoints: 150; collisionEntities: a-entity; curveMissColor: #99ff99');
+    cursor2.setAttribute('oculus-touch-controls', 'hand: left');
+
+    scene.appendChild(cursor2);
   }
 
   window.startPosition = startPosition;
