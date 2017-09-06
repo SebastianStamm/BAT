@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+<title>BAT Controller</title>
+</head>
+<body style="margin: 0; background: rgb(25,25,25);">
+<button id="resetButton">Reset Player Position</button>
+<script type="application/javascript">
+  let connected = false;
+
+  var socket = new WebSocket("ws://"+window.location.host);
+  socket.onmessage = function(evt) {
+    console.log('got data from client', evt.data);
+    
+    switch(evt.data) {
+        case 'CONNECTED': connected = true; break;
+        case 'DISCONNECTED': connected = false; break;
+    }
+  }
+  
+  socket.onopen = function(evt) {
+    socket.send('INIT CONTROLLER');
+  }
+
+  resetButton.addEventListener('click', () => {
+    socket.send('RESET');
+  });
+</script>
+</body>
+</html>

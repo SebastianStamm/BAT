@@ -1,0 +1,24 @@
+{
+  "name": "bat",
+  "version": "1.0.0",
+  "description": "BAT",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SebastianStamm/BAT.git"
+  },
+  "author": "Sebastian Stamm",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/SebastianStamm/BAT/issues"
+  },
+  "homepage": "https://github.com/SebastianStamm/BAT#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "ws": "^3.1.0"
+  }
+}
