@@ -242,13 +242,13 @@ function handleTask(scene, element) {
   // computer for serviceTasks
   if(element.businessObject.$instanceOf('bpmn:ServiceTask')) {
     //<a-entity obj-model="obj: #human-obj;" scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
-    const model = document.createElement('a-entity');
-    model.setAttribute('obj-model', 'obj: #computer-obj;');
-    model.setAttribute('scale', '0.01 0.01 0.01');
-    model.setAttribute('rotation', '0 90 0');
-    model.setAttribute('position', (element.y * globalScaleFactor + element.height / 10 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 10))
+    // const model = document.createElement('a-entity');
+    // model.setAttribute('obj-model', 'obj: #computer-obj;');
+    // model.setAttribute('scale', '0.01 0.01 0.01');
+    // model.setAttribute('rotation', '0 90 0');
+    // model.setAttribute('position', (element.y * globalScaleFactor + element.height / 10 * globalScaleFactor) + ' '+(layer1)+' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 10))
 
-    scene.appendChild(model);
+    // scene.appendChild(model);
   }
 
   scene.appendChild(task);

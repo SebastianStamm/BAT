@@ -165,8 +165,8 @@ function handleModel(viewer) {
   camera.setAttribute('camera', 'userHeight: 1.6');
   camera.setAttribute('look-controls', true);
   camera.setAttribute('wasd-controls', 'acceleration: 250');
-  camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
-  camera.setAttribute('collision', true);
+  // camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
+  // camera.setAttribute('collision', true);
   scene.appendChild(camera);
 
   // setup lights
@@ -210,6 +210,34 @@ function handleModel(viewer) {
     raycaster.setAttribute('direction', '0 0 -1');
 
     camera.appendChild(raycaster);
+  }
+
+  if(BATVR) {
+    //teleport-controls vive-controls="hand: left"
+    const cursor = document.createElement('a-entity');
+    cursor.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; curveNumberPoints: 120; collisionEntities: a-entity');
+    cursor.setAttribute('oculus-touch-controls', 'hand: right');
+
+    scene.appendChild(cursor);
+
+    const startPosX = (startPosition.y * globalScaleFactor + posOffset);
+    const startPosY = (-startPosition.x * globalScaleFactor - posOffset);
+    window.setTimeout(() => {
+      console.log('camera position', camera.getAttribute('position'));
+
+      var camPosition = new THREE.Vector3(0,0,0);
+      camera.setAttribute('position', startPosX + ' 0 ' + startPosY);
+      var hands = document.querySelectorAll('a-entity[tracked-controls]');
+      for (var i = 0; i < hands.length; i++) {
+        var position = hands[i].getAttribute('position');
+        var pos = new THREE.Vector3().copy(position);
+        var diff = camPosition.clone().sub(pos);
+        var newPosition = new THREE.Vector3(startPosX, 0, startPosY).clone().sub(diff);
+        console.log('new position', newPosition);
+        hands[i].setAttribute('position', newPosition);
+      }
+      console.log('found hands', hands);
+    }, 200);
   }
 
   window.BATscene = scene;
