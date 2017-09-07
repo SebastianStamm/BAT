@@ -264,7 +264,7 @@ function handleGateway(scene, element) {
     scene.appendChild(toLabel);
     const nameLabel = document.createElement('a-entity');
     nameLabel.setAttribute('rotation', '0 0 0');
-    nameLabel.setAttribute('text', 'value: '+openExits.e+'; color: black; width: 6; align: center;');
+    nameLabel.setAttribute('text', 'value: '+openExits.e+'; color: black; width: 4; align: center;');
     nameLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 3.8 ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor - layer1));
     nameLabel.setAttribute('model-entity', 'true');
     scene.appendChild(nameLabel);
@@ -278,7 +278,7 @@ function handleGateway(scene, element) {
     scene.appendChild(toLabel);
     const nameLabel = document.createElement('a-entity');
     nameLabel.setAttribute('rotation', '0 180 0');
-    nameLabel.setAttribute('text', 'value: '+openExits.w+'; color: black; width: 6; align: center;');
+    nameLabel.setAttribute('text', 'value: '+openExits.w+'; color: black; width: 4; align: center;');
     nameLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 3.8 ' + -(element.x * globalScaleFactor + layer1));
     nameLabel.setAttribute('model-entity', 'true');
     scene.appendChild(nameLabel);
@@ -292,7 +292,7 @@ function handleGateway(scene, element) {
     scene.appendChild(toLabel);
     const nameLabel = document.createElement('a-entity');
     nameLabel.setAttribute('rotation', '0 90 0');
-    nameLabel.setAttribute('text', 'value: '+openExits.n+'; color: black; width: 6; align: center;');
+    nameLabel.setAttribute('text', 'value: '+openExits.n+'; color: black; width: 4; align: center;');
     nameLabel.setAttribute('position', (element.y * globalScaleFactor + layer1) + ' 3.8 ' + -((element.x + element.width / 2) * globalScaleFactor));
     nameLabel.setAttribute('model-entity', 'true');
     scene.appendChild(nameLabel);
@@ -306,7 +306,7 @@ function handleGateway(scene, element) {
     scene.appendChild(toLabel);
     const nameLabel = document.createElement('a-entity');
     nameLabel.setAttribute('rotation', '0 -90 0');
-    nameLabel.setAttribute('text', 'value: '+openExits.s+'; color: black; width: 6; align: center;');
+    nameLabel.setAttribute('text', 'value: '+openExits.s+'; color: black; width: 4; align: center;');
     nameLabel.setAttribute('position', ((element.y + element.height) * globalScaleFactor - layer1) + ' 3.8 ' + -((element.x + element.width / 2) * globalScaleFactor));
     nameLabel.setAttribute('model-entity', 'true');
     scene.appendChild(nameLabel);

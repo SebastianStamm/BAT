@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.css">
 <script src="./bpmn-viewer.js"></script>
 <script src="./globals.js"></script>
+<script src="./random.js"></script>
 </head>
 <body style="padding-top: 3rem;">
     <div class="ui text container">
@@ -68,7 +69,6 @@
 
   var socket = new WebSocket("ws://"+window.location.host);
   socket.onmessage = function(evt) {
-    console.log('got data from client', evt.data);
     const data = evt.data.split('|');
     
     switch(data[0]) {
@@ -121,6 +121,33 @@
     setActiveBtn(showSplashButton);
   });
 
+  randomizeButton.addEventListener('click', () => {
+    randomize();
+  });
+
+  function randomize() {
+      const tasks = window.modelViewer.get('elementRegistry').filter(el => {
+          return el.businessObject.$instanceOf('bpmn:Task');
+      });
+
+      console.log('tasks', tasks);
+      tasks.forEach(task => {
+          const bo = task.businessObject;
+          bo.name = getRandomName();
+      });
+
+      window.modelViewer.saveXML((err, xml) => {
+        socket.send('BPMN|' + xml);
+          handleModel(xml);
+      });
+  }
+
+  function getRandomName() {
+      return window.randomVerbs[~~(Math.random() * 100)] + ' ' +
+        window.randomAdjectives[~~(Math.random() * 100)] + ' ' +
+        window.randomSubjects[~~(Math.random() * 100)];
+  }
+
   function handleModel(xml) {
     var BpmnViewer = window.BpmnJS;
     
@@ -155,13 +182,15 @@
   }
 
   function updatePlayerPosition(data) {
-    const x = data[0];
-    const y = data[1];
-    const rotation = data[2];
-    window.playerToken.setAttributeNS(null, 'x', x - window.iconSize / 2);
-    window.playerToken.setAttributeNS(null, 'y', y - window.iconSize / 2);
-
-    window.playerToken.setAttributeNS(null, 'transform', 'rotate('+rotation+', '+x+', '+y+')');
+    if(window.playerToken) {
+        const x = data[0];
+        const y = data[1];
+        const rotation = data[2];
+        window.playerToken.setAttributeNS(null, 'x', x - window.iconSize / 2);
+        window.playerToken.setAttributeNS(null, 'y', y - window.iconSize / 2);
+    
+        window.playerToken.setAttributeNS(null, 'transform', 'rotate('+rotation+', '+x+', '+y+')');
+    }
   }
 
   function setActiveBtn(btn) {
