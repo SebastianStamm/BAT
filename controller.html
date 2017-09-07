@@ -4,6 +4,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 <title>BAT Controller</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.css">
+<script src="./bpmn-viewer.js"></script>
+<script src="./globals.js"></script>
 </head>
 <body style="padding-top: 3rem;">
     <div class="ui text container">
@@ -46,6 +48,20 @@
                 </div>
             </div>
         </div>
+        <div class="ui three column grid">
+            <div class="center aligned row">
+                <div class="sixteen wide column">
+                    <button id="randomizeButton" class="big fluid icon labeled ui button">
+                        <i class="recycle icon"></i>
+                        Generate Random Task Names
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="diagramContainer" style="width: 100%; height: 500px; border: 1px solid black; margin-top: 1rem;">
+
+        </div>
     </div>
 <script type="application/javascript">
   let connected = false;
@@ -53,10 +69,12 @@
   var socket = new WebSocket("ws://"+window.location.host);
   socket.onmessage = function(evt) {
     console.log('got data from client', evt.data);
+    const data = evt.data.split('|');
     
-    switch(evt.data) {
+    switch(data[0]) {
         case 'CONNECTED': connected = true; break;
         case 'DISCONNECTED': connected = false; break;
+        case 'POS': updatePlayerPosition(data[1].split('!'));
     }
   }
   
@@ -80,6 +98,7 @@
 
         reader.addEventListener('load', e => {
           socket.send('BPMN|' + e.target.result);
+          handleModel(e.target.result);
         });
 
         reader.readAsText(file);
@@ -101,6 +120,49 @@
     socket.send('SHOW|SPLASH');
     setActiveBtn(showSplashButton);
   });
+
+  function handleModel(xml) {
+    var BpmnViewer = window.BpmnJS;
+    
+    const container = document.querySelector('#diagramContainer');
+    container.innerHTML = '';
+
+    const viewer = new BpmnViewer({ container: container });
+    
+    viewer.importXML(xml, (err, result) => {
+        addPlayerToken();
+        const canvas = window.modelViewer.get('canvas');
+
+        canvas.resized();
+        canvas.zoom('fit-viewport', 'auto');
+    });
+
+    window.modelViewer = viewer;
+  }
+
+  function addPlayerToken() {
+    const imageElement = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+
+    imageElement.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'img/pointer.png');
+    imageElement.setAttributeNS(null, 'width', window.iconSize);
+    imageElement.setAttributeNS(null, 'height', window.iconSize);
+    imageElement.setAttributeNS(null, 'x', "10");
+    imageElement.setAttributeNS(null, 'y', "10");
+
+    window.playerToken = imageElement;
+
+    window.modelViewer.get('canvas')._viewport.appendChild(imageElement);
+  }
+
+  function updatePlayerPosition(data) {
+    const x = data[0];
+    const y = data[1];
+    const rotation = data[2];
+    window.playerToken.setAttributeNS(null, 'x', x - window.iconSize / 2);
+    window.playerToken.setAttributeNS(null, 'y', y - window.iconSize / 2);
+
+    window.playerToken.setAttributeNS(null, 'transform', 'rotate('+rotation+', '+x+', '+y+')');
+  }
 
   function setActiveBtn(btn) {
       const btns = document.querySelectorAll('.big.toggle.button');

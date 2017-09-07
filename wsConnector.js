@@ -1,4 +1,5 @@
 const socket = new WebSocket("ws://"+window.location.host);
+let connected = false;
 socket.onmessage = function(evt) {
   const data = evt.data.split('|');
   console.log('got data from controller', evt.data);
@@ -10,8 +11,15 @@ socket.onmessage = function(evt) {
 };
 
 socket.onopen = function(evt) {
+  connected = true;
   socket.send('INIT|PLAYER');
 };
+
+window.broadcast = function(msg) {
+    if(connected) {
+        socket.send(msg);
+    }
+}
 
 function resetPosition() {
     const posOffset = startPosition.width / 2 * globalScaleFactor;

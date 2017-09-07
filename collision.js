@@ -23,6 +23,8 @@
 
 				const rotation = 135 - (this.el.object3D.rotation.y / Math.PI * 180);
 				window.playerToken.setAttributeNS(null, 'transform', 'rotate('+rotation+', '+x+', '+y+')');
+
+				window.broadcast('POS|'+x+'!'+y+'!'+rotation);
 			}
 		}
 	});

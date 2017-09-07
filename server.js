@@ -17,9 +17,11 @@ wss.on('connection', function connection(ws) {
   ws.on('close', function close() {
     if(controller === ws && player) {
         player.send('DISCONNECTED');
+        controller = null;
     }
     if(player === ws && controller) {
         controller.send('DISCONNECTED');
+        player = null;
     }
   });
 
