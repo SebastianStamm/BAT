@@ -264,13 +264,14 @@ function handleTask(scene, element) {
 
   {
     const label = document.createElement('a-image');
-    label.setAttribute('src', 'img/door.png');
+    label.setAttribute('src', 'img/door_closed.png');
     label.setAttribute('position', (element.y * globalScaleFactor - layer1) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
     label.setAttribute('rotation', '0 90 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     label.setAttribute('model-entity', 'true');
     scene.appendChild(label);
     if(openExits.n !== false) {
+      label.setAttribute('src', 'img/door.png');
       label.setAttribute('opacity', doorOpacity);
       label.setAttribute('transparent', 'true');
       availableDoors.push(label);
@@ -278,13 +279,14 @@ function handleTask(scene, element) {
   }
   {
     const label = document.createElement('a-image');
-    label.setAttribute('src', 'img/door.png');
+    label.setAttribute('src', 'img/door_closed.png');
     label.setAttribute('position', ((element.y + element.height) * globalScaleFactor + layer1) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
     label.setAttribute('rotation', '0 90 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     label.setAttribute('model-entity', 'true');
     scene.appendChild(label);
     if(openExits.s !== false) {
+      label.setAttribute('src', 'img/door.png');
       label.setAttribute('opacity', doorOpacity);
       label.setAttribute('transparent', 'true');
       availableDoors.push(label);
@@ -292,13 +294,14 @@ function handleTask(scene, element) {
   }
   {
     const label = document.createElement('a-image');
-    label.setAttribute('src', 'img/door.png');
+    label.setAttribute('src', 'img/door_closed.png');
     label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor - layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     label.setAttribute('model-entity', 'true');
     scene.appendChild(label);
     if(openExits.w !== false) {
+      label.setAttribute('src', 'img/door.png');
       label.setAttribute('opacity', doorOpacity);
       label.setAttribute('transparent', 'true');
       availableDoors.push(label);
@@ -306,13 +309,14 @@ function handleTask(scene, element) {
   }
   {
     const label = document.createElement('a-image');
-    label.setAttribute('src', 'img/door.png');
+    label.setAttribute('src', 'img/door_closed.png');
     label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (sequenceFlowHeight / 2) + ' ' + -((element.x + element.width) * globalScaleFactor + layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
     label.setAttribute('model-entity', 'true');
     scene.appendChild(label);
     if(openExits.e !== false) {
+      label.setAttribute('src', 'img/door.png');
       label.setAttribute('opacity', doorOpacity);
       label.setAttribute('transparent', 'true');
       availableDoors.push(label);
