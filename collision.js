@@ -14,6 +14,16 @@
 				}
 			});
 
+			if(window.playerToken) {
+				const x = -this.el.object3D.position.z / globalScaleFactor;
+				const y = this.el.object3D.position.x / globalScaleFactor;
+
+				window.playerToken.setAttributeNS(null, 'x', x - window.iconSize / 2);
+				window.playerToken.setAttributeNS(null, 'y', y - window.iconSize / 2);
+
+				const rotation = 135 - (this.el.object3D.rotation.y / Math.PI * 180);
+				window.playerToken.setAttributeNS(null, 'transform', 'rotate('+rotation+', '+x+', '+y+')');
+			}
 		}
 	});
 })();

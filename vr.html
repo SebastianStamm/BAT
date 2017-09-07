@@ -10,9 +10,24 @@
         canvas[width="2688"] {
             width: 200% !important;
         }
+
+        .content-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: 1s;
+        }
+
+        .bjs-powered-by {
+            display: none !important;
+        }
     </style>
 
     <body>
+      <div id="vrContent" class="content-container" style="opacity: 1;"></div>
+      <div id="bpmnContent" class="content-container" style="opacity: 0;"></div>
+      <div id="splashContent" class="content-container" style="opacity: 0;"></div>
+
       <script type="application/javascript">
   
       const bpmnXml = `<?xml version="1.0" encoding="UTF-8"?>

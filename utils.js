@@ -220,8 +220,7 @@ function handleModel(viewer) {
   directionalLight.setAttribute('position', '0 1 0');
   scene.appendChild(directionalLight);
 
-  document.body.appendChild(scene);
-
+  document.querySelector('#vrContent').appendChild(scene);
 
   // setup mobile cursor
   if(BATmobile) {

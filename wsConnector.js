@@ -5,6 +5,7 @@ socket.onmessage = function(evt) {
   switch(data[0]) {
       case 'RESET': return resetPosition();
       case 'BPMN': return updateBpmn(data[1]);
+      case 'SHOW': return switchView(data[1]);
   }
 };
 
@@ -31,32 +32,56 @@ function resetPosition() {
 function updateBpmn(newXml) {
     var BpmnViewer = window.BpmnJS;
     
-    var viewer = new BpmnViewer({ container: document.createElement('div') });
+    const container = document.querySelector('#bpmnContent');
+    const newDiagram = document.createElement('div');
+    
+    container.innerHTML = '';
+    container.appendChild(newDiagram);
+
+    const viewer = new BpmnViewer({ container: newDiagram });
     
     viewer.importXML(newXml, (err, result) => {
         updateModel(viewer);
+        fixDiagramSize();
+        addPlayerToken();
     });
+
+    window.modelViewer = viewer;
 }
 
-// function getCameraParameters() {
-//     const camera = window.BATcamera;
-//     return {
-//         position: camera.getAttribute('position'),
-//         rotation: camera.getAttribute('rotation')
-//     };
-// }
+function addPlayerToken() {
+    const imageElement = document.createElementNS('http://www.w3.org/2000/svg', 'image');
 
-// function setCameraParameters(params) {
-//     const camera = window.BATcamera;
+    imageElement.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'img/pointer.png');
+    imageElement.setAttributeNS(null, 'width', window.iconSize);
+    imageElement.setAttributeNS(null, 'height', window.iconSize);
+    imageElement.setAttributeNS(null, 'x', "10");
+    imageElement.setAttributeNS(null, 'y', "10");
 
-//     camera.setAttribute('position', params.position);
-//     camera.setAttribute('rotation', params.rotation);
-// }
+    window.playerToken = imageElement;
 
-// function removeModel() {
-//     const scene = document.querySelector('a-scene');
-//     return scene.exitVR().then(() => {
-//         scene.parentNode.removeChild(scene);
-//     });
-// }
+    window.modelViewer.get('canvas')._viewport.appendChild(imageElement);
+}
 
+function fixDiagramSize() {
+    const canvas = window.modelViewer.get('canvas');
+
+    canvas.resized();
+    canvas.zoom('fit-viewport', 'auto');
+}
+
+function switchView(targetView) {
+    const views = document.querySelectorAll('.content-container');
+    for(let i = 0; i < views.length; i++) {
+        views[i].style.opacity = '0';
+    }
+
+    document.querySelector('#'+targetView.toLowerCase() + 'Content').style.opacity = '1';
+
+    if(targetView === 'BPMN') {
+        fixDiagramSize();
+
+        // keep vr mode partially visible
+        document.querySelector('#VRContent').style.opacity = '.2';
+    }
+}
