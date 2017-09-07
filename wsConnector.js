@@ -1,13 +1,15 @@
 const socket = new WebSocket("ws://"+window.location.host);
 socket.onmessage = function(evt) {
+  const data = evt.data.split('|');
   console.log('got data from controller', evt.data);
-  switch(evt.data) {
+  switch(data[0]) {
       case 'RESET': return resetPosition();
+      case 'BPMN': return updateBpmn(data[1]);
   }
 };
 
 socket.onopen = function(evt) {
-  socket.send('INIT PLAYER');
+  socket.send('INIT|PLAYER');
 };
 
 function resetPosition() {
@@ -25,3 +27,36 @@ function resetPosition() {
       hands[i].setAttribute('position', newPosition);
     }
 }
+
+function updateBpmn(newXml) {
+    var BpmnViewer = window.BpmnJS;
+    
+    var viewer = new BpmnViewer({ container: document.createElement('div') });
+    
+    viewer.importXML(newXml, (err, result) => {
+        updateModel(viewer);
+    });
+}
+
+// function getCameraParameters() {
+//     const camera = window.BATcamera;
+//     return {
+//         position: camera.getAttribute('position'),
+//         rotation: camera.getAttribute('rotation')
+//     };
+// }
+
+// function setCameraParameters(params) {
+//     const camera = window.BATcamera;
+
+//     camera.setAttribute('position', params.position);
+//     camera.setAttribute('rotation', params.rotation);
+// }
+
+// function removeModel() {
+//     const scene = document.querySelector('a-scene');
+//     return scene.exitVR().then(() => {
+//         scene.parentNode.removeChild(scene);
+//     });
+// }
+

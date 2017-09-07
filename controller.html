@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="column">
-                    <div class="ui link card" style="width: 100%">
+                    <div id="updateButton" class="ui link card" style="width: 100%">
                         <div class="content"><i aria-hidden="true" class="huge level up icon"></i></div>
                         <div class="content">Update BPMN Model</div>
                     </div>
@@ -61,11 +61,30 @@
   }
   
   socket.onopen = function(evt) {
-    socket.send('INIT CONTROLLER');
+    socket.send('INIT|CONTROLLER');
   }
 
   resetButton.addEventListener('click', () => {
     socket.send('RESET');
+  });
+
+  updateButton.addEventListener('click', () => {
+    const input = document.createElement('input');
+
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', '.bpmn');
+
+      input.addEventListener('change', evt => {
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener('load', e => {
+          socket.send('BPMN|' + e.target.result);
+        });
+
+        reader.readAsText(file);
+      });
+      input.click();
   });
 </script>
 </body>

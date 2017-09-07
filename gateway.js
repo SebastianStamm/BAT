@@ -163,10 +163,12 @@ function handleGateway(scene, element) {
   const gateway = document.createElement('a-entity');
   gateway.setAttribute('geometry', 'primitive: gateway; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
   gateway.setAttribute('material', 'color: #FFFFFF');
+  gateway.setAttribute('model-entity', 'true');
 
   const line = document.createElement('a-entity');
   line.setAttribute('geometry', 'primitive: gatewayLine; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
   line.setAttribute('material', 'color: #333333');
+  line.setAttribute('model-entity', 'true');
 
   // <a-image src="#my-image"></a-image>
   let img;
@@ -183,6 +185,7 @@ function handleGateway(scene, element) {
   label.setAttribute('position', (element.y * globalScaleFactor + element.height * globalScaleFactor / 2) + ' ' + layer1 + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
   label.setAttribute('rotation', '90 90 0');
   label.setAttribute('scale', '3 3 3');
+  label.setAttribute('model-entity', 'true');
 
   scene.appendChild(gateway);
   scene.appendChild(line);
@@ -196,6 +199,7 @@ function handleGateway(scene, element) {
     label.setAttribute('position', (element.y * globalScaleFactor - layer1) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
     label.setAttribute('rotation', '0 90 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
+    label.setAttribute('model-entity', 'true');
     scene.appendChild(label);
     if(openExits.n !== false) {
       label.setAttribute('opacity', doorOpacity);
@@ -209,6 +213,7 @@ function handleGateway(scene, element) {
     label.setAttribute('position', ((element.y + element.height) * globalScaleFactor + layer1) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
     label.setAttribute('rotation', '0 90 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
+    label.setAttribute('model-entity', 'true');
     scene.appendChild(label);
     if(openExits.s !== false) {
       label.setAttribute('opacity', doorOpacity);
@@ -222,6 +227,7 @@ function handleGateway(scene, element) {
     label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (sequenceFlowHeight / 2) + ' ' + -(element.x * globalScaleFactor - layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
+    label.setAttribute('model-entity', 'true');
     scene.appendChild(label);
     if(openExits.w !== false) {
       label.setAttribute('opacity', doorOpacity);
@@ -235,6 +241,7 @@ function handleGateway(scene, element) {
     label.setAttribute('position', ((element.y + element.height / 2) * globalScaleFactor) + ' ' + (sequenceFlowHeight / 2) + ' ' + -((element.x + element.width) * globalScaleFactor + layer1));
     label.setAttribute('rotation', '0 0 0');
     label.setAttribute('scale', (sequenceFlowWidth * 2) + ' ' + (roomHeight / 2));
+    label.setAttribute('model-entity', 'true');
     scene.appendChild(label);
     if(openExits.e !== false) {
       label.setAttribute('opacity', doorOpacity);
@@ -249,11 +256,13 @@ function handleGateway(scene, element) {
     toLabel.setAttribute('rotation', '0 0 0');
     toLabel.setAttribute('text', 'value: To; color: black; width: 5; align: center;');
     toLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 4.3 ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor - layer1));
+    toLabel.setAttribute('model-entity', 'true');
     scene.appendChild(toLabel);
     const nameLabel = document.createElement('a-entity');
     nameLabel.setAttribute('rotation', '0 0 0');
     nameLabel.setAttribute('text', 'value: '+openExits.e+'; color: black; width: 6; align: center;');
     nameLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 3.8 ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor - layer1));
+    nameLabel.setAttribute('model-entity', 'true');
     scene.appendChild(nameLabel);
   }
   if(openExits.w) {
@@ -261,11 +270,13 @@ function handleGateway(scene, element) {
     toLabel.setAttribute('rotation', '0 180 0');
     toLabel.setAttribute('text', 'value: To; color: black; width: 5; align: center;');
     toLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 4.3 ' + -(element.x * globalScaleFactor + layer1));
+    toLabel.setAttribute('model-entity', 'true');
     scene.appendChild(toLabel);
     const nameLabel = document.createElement('a-entity');
     nameLabel.setAttribute('rotation', '0 180 0');
     nameLabel.setAttribute('text', 'value: '+openExits.w+'; color: black; width: 6; align: center;');
     nameLabel.setAttribute('position', (element.y * globalScaleFactor + element.height / 2 * globalScaleFactor) + ' 3.8 ' + -(element.x * globalScaleFactor + layer1));
+    nameLabel.setAttribute('model-entity', 'true');
     scene.appendChild(nameLabel);
   }
   if(openExits.n) {
@@ -273,11 +284,13 @@ function handleGateway(scene, element) {
     toLabel.setAttribute('rotation', '0 90 0');
     toLabel.setAttribute('text', 'value: To; color: black; width: 5; align: center;');
     toLabel.setAttribute('position', (element.y * globalScaleFactor + layer1) + ' 4.3 ' + -((element.x + element.width / 2) * globalScaleFactor));
+    toLabel.setAttribute('model-entity', 'true');
     scene.appendChild(toLabel);
     const nameLabel = document.createElement('a-entity');
     nameLabel.setAttribute('rotation', '0 90 0');
     nameLabel.setAttribute('text', 'value: '+openExits.n+'; color: black; width: 6; align: center;');
     nameLabel.setAttribute('position', (element.y * globalScaleFactor + layer1) + ' 3.8 ' + -((element.x + element.width / 2) * globalScaleFactor));
+    nameLabel.setAttribute('model-entity', 'true');
     scene.appendChild(nameLabel);
   }
   if(openExits.s) {
@@ -285,11 +298,13 @@ function handleGateway(scene, element) {
     toLabel.setAttribute('rotation', '0 -90 0');
     toLabel.setAttribute('text', 'value: To; color: black; width: 5; align: center;');
     toLabel.setAttribute('position', ((element.y + element.height) * globalScaleFactor - layer1) + ' 4.3 ' + -((element.x + element.width / 2) * globalScaleFactor));
+    toLabel.setAttribute('model-entity', 'true');
     scene.appendChild(toLabel);
     const nameLabel = document.createElement('a-entity');
     nameLabel.setAttribute('rotation', '0 -90 0');
     nameLabel.setAttribute('text', 'value: '+openExits.s+'; color: black; width: 6; align: center;');
     nameLabel.setAttribute('position', ((element.y + element.height) * globalScaleFactor - layer1) + ' 3.8 ' + -((element.x + element.width / 2) * globalScaleFactor));
+    nameLabel.setAttribute('model-entity', 'true');
     scene.appendChild(nameLabel);
   }
 }

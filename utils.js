@@ -90,6 +90,54 @@ function addSpace(p1,p2,p3) {
   openSpaces.push({p1,p2,p3});
 }
 
+function updateModel(viewer) {
+  // remove old model entity
+  const oldElements = document.querySelectorAll('[model-entity="true"]');
+  console.log('oldelements', oldElements);
+
+  for(var i = 0; i < oldElements.length; i++) {
+    oldElements[i].parentNode.removeChild(oldElements[i]);
+  }
+
+  availableDoors.length = 0;
+
+  // add new elements
+  let startPosition;
+  
+  const data = [];
+  const elementRegistry = viewer.get('elementRegistry');
+  const scene = window.BATscene;
+
+  elementRegistry.forEach(element => {
+    const bo = element.businessObject;
+
+    if(element.type === 'label') {
+      return;
+    }
+
+    if(bo.$instanceOf('bpmn:SequenceFlow')) {
+      handleSequenceFlow(scene, element);
+    }
+
+    if(bo.$instanceOf('bpmn:Task')) {
+      handleTask(scene, element);
+    }
+
+    if(bo.$instanceOf('bpmn:Event')) {
+      handleGateway(scene, element);
+      if(bo.$instanceOf('bpmn:StartEvent')) {
+        startPosition = element;
+      }
+    }
+
+    if(bo.$instanceOf('bpmn:Gateway')) {
+      handleGateway(scene, element);
+    }
+  });
+
+  window.startPosition = startPosition;
+}
+
 function handleModel(viewer) {
   const scene = document.createElement('a-scene');
 
@@ -121,19 +169,8 @@ function handleModel(viewer) {
   const data = [];
   const elementRegistry = viewer.get('elementRegistry');
 
-  let min = [Infinity, Infinity];
-  let max = [-Infinity, -Infinity];
-
   elementRegistry.forEach(element => {
     const bo = element.businessObject;
-
-    if(typeof element.x === 'number') {
-      min[0] = Math.min(min[0], element.x);
-      min[1] = Math.min(min[1], element.y);
-      max[0] = Math.max(max[0], element.x + element.width);
-      max[1] = Math.max(max[1], element.y + element.height);
-    }
-
 
     if(element.type === 'label') {
       return;
@@ -162,7 +199,7 @@ function handleModel(viewer) {
   // <a-entity camera="userHeight: 1.6" look-controls></a-entity>
   const posOffset = startPosition.width / 2 * globalScaleFactor;
   const camera = document.createElement('a-entity');
-  camera.setAttribute('camera', 'userHeight: 1.6');
+  camera.setAttribute('camera', 'userHeight: 0');
   camera.setAttribute('look-controls', true);
   camera.setAttribute('wasd-controls', 'acceleration: 250');
   // camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));

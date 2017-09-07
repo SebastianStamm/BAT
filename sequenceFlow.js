@@ -107,10 +107,12 @@ function handleSequenceFlow(scene, element) {
   const flow = document.createElement('a-entity');
   flow.setAttribute('geometry', 'primitive: sequenceFlow; points:' + points + ';');
   flow.setAttribute('material', 'color: #FFFFFF; side: double;');
+  flow.setAttribute('model-entity', 'true');
 
   const line = document.createElement('a-entity');
   line.setAttribute('geometry', 'primitive: sequenceFlowLine; points:' + points + ';');
   line.setAttribute('material', 'color: #333333');
+  line.setAttribute('model-entity', 'true');
 
   scene.appendChild(flow);
   scene.appendChild(line);

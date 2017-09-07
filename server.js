@@ -25,7 +25,7 @@ wss.on('connection', function connection(ws) {
 
   ws.on('message', function incoming(message) {
     console.log(message);
-    const parts = message.split(' ');
+    const parts = message.split('|');
 
     if(parts[0] === 'INIT' && parts[1] === 'CONTROLLER') {
         controller = ws;
