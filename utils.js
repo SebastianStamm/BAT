@@ -196,7 +196,7 @@ function handleModel(viewer) {
     }
   });
 
-  // <a-entity camera="userHeight: 1.6" look-controls></a-entity>
+  // <a-entity camera="userHeight: 1.7" look-controls></a-entity>
   const posOffset = startPosition.width / 2 * globalScaleFactor;
   const camera = document.createElement('a-entity');
   camera.setAttribute('camera', 'userHeight: 0');

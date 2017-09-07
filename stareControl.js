@@ -18,7 +18,7 @@ AFRAME.registerComponent('gaze-control', {
 
       if(fuse === 20) {
         fuse = 0;
-        BATcamera.setAttribute('position', pt.x + ' 1.6 ' + pt.z);
+        BATcamera.setAttribute('position', pt.x + ' 1.7 ' + pt.z);
       }
     });
 
