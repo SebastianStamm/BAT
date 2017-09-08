@@ -24,7 +24,7 @@
 				const rotation = 135 - (this.el.object3D.rotation.y / Math.PI * 180);
 				window.playerToken.setAttributeNS(null, 'transform', 'rotate('+rotation+', '+x+', '+y+')');
 
-				window.broadcast('POS|'+x+'!'+y+'!'+rotation);
+				window.broadcast('POS|' + x.toPrecision(5) + '!' + y.toPrecision(5) + '!' + rotation.toPrecision(5));
 			}
 		}
 	});
