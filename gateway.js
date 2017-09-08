@@ -180,6 +180,11 @@ function handleGateway(scene, element) {
     case 'bpmn:ParallelGateway': img = 'parallel'; break;
     default: img = 'px'; break;
   }
+
+  if(element.id === 'goal') {
+    img = 'goal';
+  }
+
   const label = document.createElement('a-image');
   label.setAttribute('src', 'img/'+img+'.png');
   label.setAttribute('position', (element.y * globalScaleFactor + element.height * globalScaleFactor / 2) + ' ' + layer1 + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
