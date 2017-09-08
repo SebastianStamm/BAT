@@ -99,6 +99,12 @@ function updateModel(viewer) {
     oldElements[i].parentNode.removeChild(oldElements[i]);
   }
 
+  const oldElements2 = document.querySelectorAll('[model-entity2="true"]');
+
+  for(var i = 0; i < oldElements2.length; i++) {
+    oldElements2[i].parentNode.removeChild(oldElements2[i]);
+  }
+
   availableDoors.length = 0;
 
   // add new elements
@@ -250,13 +256,13 @@ function handleModel(viewer) {
 
   if(BATVR) {
     const cursor1 = document.createElement('a-entity');
-    cursor1.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; curveNumberPoints: 150; collisionEntities: a-entity; curveMissColor: #99ff99');
+    cursor1.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; collisionEntities: [model-entity];');
     cursor1.setAttribute('oculus-touch-controls', 'hand: right');
 
     scene.appendChild(cursor1);
 
     const cursor2 = document.createElement('a-entity');
-    cursor2.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; curveNumberPoints: 150; collisionEntities: a-entity; curveMissColor: #99ff99');
+    cursor2.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; collisionEntities: [model-entity];');
     cursor2.setAttribute('oculus-touch-controls', 'hand: left');
 
     scene.appendChild(cursor2);

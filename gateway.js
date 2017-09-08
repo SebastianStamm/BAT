@@ -190,7 +190,7 @@ function handleGateway(scene, element) {
   label.setAttribute('position', (element.y * globalScaleFactor + element.height * globalScaleFactor / 2) + ' ' + layer1 + ' ' + -(element.x * globalScaleFactor + element.width * globalScaleFactor / 2));
   label.setAttribute('rotation', '90 90 0');
   label.setAttribute('scale', '3 3 3');
-  label.setAttribute('model-entity', 'true');
+  label.setAttribute('model-entity2', 'true');
 
   scene.appendChild(gateway);
   scene.appendChild(line);
