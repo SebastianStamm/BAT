@@ -15,13 +15,17 @@ let player = null;
 
 wss.on('connection', function connection(ws) {
   ws.on('close', function close() {
-    if(controller === ws && player) {
+    if(controller === ws) {
+      controller = null;
+      if(player) {
         player.send('DISCONNECTED');
-        controller = null;
+      }
     }
-    if(player === ws && controller) {
+    if(player === ws) {
+      player = null;
+      if(controller) {
         controller.send('DISCONNECTED');
-        player = null;
+      }
     }
   });
 
