@@ -40,13 +40,13 @@
       <div id="bpmnContent" class="content-container" style="opacity: 0;"></div>
       <div id="splashContent" class="content-container" style="opacity: 1; background-image: url(img/capture.png); background-size:cover;">
           <div style="position:absolute; bottom: 0; width: 100%;">
-              <center><img src="img/vrguy.png" style="display: inline-block; width: 45%;" /></center>
+              <center><img src="img/vrguy.png" style="display: inline-block; width: 70%;" /></center>
           </div>
         <div class="bat-slogan" style="color: #b5152b; text-align: center; margin-top: .4em; font-size: 10em;">BE A TOKEN</div>
       </div>
 
       <script type="application/javascript">
-  
+
       const bpmnXml = `<?xml version="1.0" encoding="UTF-8"?>
       <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
         <bpmn:process id="Process_1" isExecutable="false">
@@ -149,7 +149,7 @@
         </bpmndi:BPMNDiagram>
       </bpmn:definitions>
   `;
-  
+
   window.BATmobile = false;
   window.BATVR = true;
   </script>
@@ -163,13 +163,12 @@
   <script type="application/javascript" src="./wsConnector.js"></script>
   <script type="application/javascript">
   var BpmnViewer = window.BpmnJS;
-  
+
   var viewer = new BpmnViewer({ container: document.createElement('div') });
-  
+
     viewer.importXML(bpmnXml, (err, result) => {
       handleModel(viewer);
     });
   </script>
   </body>
   </html>
-  
