@@ -70,14 +70,14 @@
   var socket = new WebSocket("ws://"+window.location.host);
   socket.onmessage = function(evt) {
     const data = evt.data.split('|');
-    
+
     switch(data[0]) {
         case 'CONNECTED': connected = true; break;
         case 'DISCONNECTED': connected = false; break;
         case 'POS': updatePlayerPosition(data[1].split('!'));
     }
   }
-  
+
   socket.onopen = function(evt) {
     socket.send('INIT|CONTROLLER');
   }
@@ -115,7 +115,7 @@
     socket.send('SHOW|BPMN');
     setActiveBtn(showBPMNButton);
   });
-  
+
   showSplashButton.addEventListener('click', () => {
     socket.send('SHOW|SPLASH');
     setActiveBtn(showSplashButton);
@@ -144,18 +144,17 @@
 
   function getRandomName() {
       return window.randomVerbs[~~(Math.random() * 100)] + ' ' +
-        window.randomAdjectives[~~(Math.random() * 100)] + ' ' +
         window.randomSubjects[~~(Math.random() * 100)];
   }
 
   function handleModel(xml) {
     var BpmnViewer = window.BpmnJS;
-    
+
     const container = document.querySelector('#diagramContainer');
     container.innerHTML = '';
 
     const viewer = new BpmnViewer({ container: container });
-    
+
     viewer.importXML(xml, (err, result) => {
         addPlayerToken();
         const canvas = window.modelViewer.get('canvas');
@@ -188,7 +187,7 @@
         const rotation = data[2];
         window.playerToken.setAttributeNS(null, 'x', x - window.iconSize / 2);
         window.playerToken.setAttributeNS(null, 'y', y - window.iconSize / 2);
-    
+
         window.playerToken.setAttributeNS(null, 'transform', 'rotate('+rotation+', '+x+', '+y+')');
     }
   }
