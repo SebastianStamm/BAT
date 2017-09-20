@@ -40,6 +40,18 @@
             animation: floating-text 2s ease alternate infinite;
         }
 
+        .time-warning {
+            font-family: 'Press Start 2P', cursive;
+            letter-spacing: .15em;
+            text-shadow: 2px 2px 3px #000000;
+            color: #b5152b;
+            text-align: center;
+            position: absolute;
+            width: 100%;
+            bottom: 2em;
+            font-size: 3em;
+        }
+
         #splashContent .imageContainer {
           position:absolute;
           bottom: 0;
@@ -85,9 +97,22 @@
         <div class="imageContainer">
           <center><img src="img/vrguy.png" /></center>
         </div>
+        <div class="time-warning">Starting at 10:30</div>
       </div>
 
       <script type="application/javascript">
+
+      function checkTime() {
+        const currentDate = new Date();
+
+        if(currentDate.getHours() > 10 || (currentDate.getHours() === 10 && currentDate.getMinutes() > 20)) {
+          document.querySelector('#splashContent').removeChild(document.querySelector('.time-warning'));
+        } else {
+          window.setTimeout(checkTime, 60000);
+        }
+      }
+
+      checkTime();
 
       const bpmnXml = `<?xml version="1.0" encoding="UTF-8"?>
       <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
