@@ -109,7 +109,7 @@ function updateModel(viewer) {
 
   // add new elements
   let startPosition;
-  
+
   const data = [];
   const elementRegistry = viewer.get('elementRegistry');
   const scene = window.BATscene;

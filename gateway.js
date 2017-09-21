@@ -53,7 +53,103 @@ AFRAME.registerGeometry('gateway', {
       new THREE.Face3(0,4,3),
       new THREE.Face3(0,5,4),
       new THREE.Face3(0,6,5),
-      new THREE.Face3(0,7,6),
+      new THREE.Face3(0,7,6)
+
+      // new THREE.Face3(10, 11, 19),
+      // new THREE.Face3(10, 19, 18),
+      // new THREE.Face3(3, 4, 20),
+      // new THREE.Face3(3, 20, 19),
+      // new THREE.Face3(12, 13, 21),
+      // new THREE.Face3(12, 21, 20),
+      // new THREE.Face3(5, 6, 22),
+      // new THREE.Face3(5, 22, 21),
+      // new THREE.Face3(14, 15, 23),
+      // new THREE.Face3(14, 23, 22),
+      // new THREE.Face3(7, 0, 16),
+      // new THREE.Face3(7, 16, 23),
+      // new THREE.Face3(8, 9, 17),
+      // new THREE.Face3(8, 17, 16),
+      // new THREE.Face3(1, 2, 18),
+      // new THREE.Face3(1, 18, 17),
+
+      // new THREE.Face3(16,17,18),
+      // new THREE.Face3(16,18,19),
+      // new THREE.Face3(16,19,20),
+      // new THREE.Face3(16,20,21),
+      // new THREE.Face3(16,21,22),
+      // new THREE.Face3(16,22,23)
+    ];
+
+    addSpace(geometry.vertices[0], geometry.vertices[2], geometry.vertices[1]);
+    addSpace(geometry.vertices[0], geometry.vertices[3], geometry.vertices[2]);
+    addSpace(geometry.vertices[0], geometry.vertices[4], geometry.vertices[3]);
+    addSpace(geometry.vertices[0], geometry.vertices[5], geometry.vertices[4]);
+    addSpace(geometry.vertices[0], geometry.vertices[6], geometry.vertices[5]);
+    addSpace(geometry.vertices[0], geometry.vertices[7], geometry.vertices[6]);
+
+
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    this.geometry = geometry;
+  }
+});
+
+AFRAME.registerGeometry('gatewayWall', {
+  schema: {
+    position: {
+      default: '0 0'
+    },
+    width: {
+      default: '10'
+    },
+    height: {
+      default: '10'
+    }
+  },
+
+  init: function (data) {
+    var geometry = new THREE.Geometry();
+
+    const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]), parseFloat(data.position.split(' ')[1]));
+    const width = parseFloat(data.width);
+    const height = parseFloat(data.height);
+
+    geometry.vertices = [
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 + sequenceFlowWidth),
+
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, sequenceFlowHeight, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, sequenceFlowHeight, -pos.x),
+      new THREE.Vector3(pos.y, sequenceFlowHeight, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, sequenceFlowHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, sequenceFlowHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, sequenceFlowHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height, sequenceFlowHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, sequenceFlowHeight, -pos.x - width / 2 + sequenceFlowWidth),
+
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, gatewayHeight, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, gatewayHeight, -pos.x),
+      new THREE.Vector3(pos.y, gatewayHeight, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, gatewayHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, gatewayHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, gatewayHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height, gatewayHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, gatewayHeight, -pos.x - width / 2 + sequenceFlowWidth)
+    ];
+
+    geometry.faces = [
+      // new THREE.Face3(0,2,1),
+      // new THREE.Face3(0,3,2),
+      // new THREE.Face3(0,4,3),
+      // new THREE.Face3(0,5,4),
+      // new THREE.Face3(0,6,5),
+      // new THREE.Face3(0,7,6),
 
       new THREE.Face3(10, 11, 19),
       new THREE.Face3(10, 19, 18),
@@ -164,11 +260,19 @@ function handleGateway(scene, element) {
   gateway.setAttribute('geometry', 'primitive: gateway; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
   gateway.setAttribute('material', 'color: #FFFFFF');
   gateway.setAttribute('model-entity', 'true');
+  gateway.setAttribute('isGateway', 'true');
+
+  const gatewayWall = document.createElement('a-entity');
+  gatewayWall.setAttribute('geometry', 'primitive: gatewayWall; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
+  gatewayWall.setAttribute('material', 'color: #FFFFFF');
+  gatewayWall.setAttribute('model-entity', 'true');
+  gatewayWall.setAttribute('isGatewayWall', 'true');
 
   const line = document.createElement('a-entity');
   line.setAttribute('geometry', 'primitive: gatewayLine; position:' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor) + '; width: '+(element.width * globalScaleFactor)+'; height: '+(element.height * globalScaleFactor)+';');
   line.setAttribute('material', 'color: #333333');
   line.setAttribute('model-entity', 'true');
+  line.setAttribute('isGatewayLine', 'true');
 
   // <a-image src="#my-image"></a-image>
   let img;
@@ -193,6 +297,7 @@ function handleGateway(scene, element) {
   label.setAttribute('model-entity2', 'true');
 
   scene.appendChild(gateway);
+  scene.appendChild(gatewayWall);
   scene.appendChild(line);
   scene.appendChild(label);
 

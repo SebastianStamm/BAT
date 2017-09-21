@@ -58,6 +58,112 @@ AFRAME.registerGeometry('task', {
       new THREE.Face3(0, 1, 2),
       new THREE.Face3(2, 3, 0),
 
+      // // norhtern wall
+      // new THREE.Face3(0, 6, 7),
+      // new THREE.Face3(0, 7, 4),
+      // new THREE.Face3(4, 7, 5),
+      // new THREE.Face3(7, 8, 5),
+      // new THREE.Face3(8, 3, 5),
+      // new THREE.Face3(9, 3, 8),
+
+      // // southern wall
+      // new THREE.Face3(1, 13, 12),
+      // new THREE.Face3(1, 10, 13),
+      // new THREE.Face3(10, 11, 13),
+      // new THREE.Face3(13, 11, 14),
+      // new THREE.Face3(14, 11, 2),
+      // new THREE.Face3(15, 14, 2),
+
+      // // western wall
+      // new THREE.Face3(0, 17, 16),
+      // new THREE.Face3(4, 17, 0),
+      // new THREE.Face3(10, 17, 4),
+      // new THREE.Face3(10, 18, 17),
+      // new THREE.Face3(10, 1, 18),
+      // new THREE.Face3(1, 19, 18),
+
+      // // eastern wall
+      // new THREE.Face3(3, 20, 21),
+      // new THREE.Face3(3, 21, 5),
+      // new THREE.Face3(5, 21, 11),
+      // new THREE.Face3(21, 22, 11),
+      // new THREE.Face3(22, 2, 11),
+      // new THREE.Face3(23, 2, 22),
+
+      // roof
+      // new THREE.Face3(11, 10, 4),
+      // new THREE.Face3(11, 4, 5),
+    ];
+
+    addSpace(geometry.vertices[0], geometry.vertices[1], geometry.vertices[2]);
+    addSpace(geometry.vertices[2], geometry.vertices[3], geometry.vertices[0]);
+
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    this.geometry = geometry;
+  }
+});
+
+AFRAME.registerGeometry('taskWall', {
+  schema: {
+    position: {
+      default: '0 0'
+    },
+    width: {
+      default: '10'
+    },
+    height: {
+      default: '10'
+    }
+  },
+
+  init: function (data) {
+    var geometry = new THREE.Geometry();
+
+    const pos = new THREE.Vector2(parseFloat(data.position.split(' ')[0]), parseFloat(data.position.split(' ')[1]));
+    const width = parseFloat(data.width);
+    const height = parseFloat(data.height);
+
+    geometry.vertices = [
+      new THREE.Vector3(pos.y, 0, -pos.x),
+      new THREE.Vector3(pos.y + height, 0, -pos.x),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width),
+      new THREE.Vector3(pos.y, 0, -pos.x - width),
+
+      // northern wall
+      new THREE.Vector3(pos.y, roomHeight, -pos.x),
+      new THREE.Vector3(pos.y, roomHeight, -pos.x - width),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, sequenceFlowHeight, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y, sequenceFlowHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y, 0, -pos.x - width / 2 - sequenceFlowWidth),
+
+      // southern wall
+      new THREE.Vector3(pos.y + height, roomHeight, -pos.x),
+      new THREE.Vector3(pos.y + height, roomHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, sequenceFlowHeight, -pos.x - width / 2 + sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, sequenceFlowHeight, -pos.x - width / 2 - sequenceFlowWidth),
+      new THREE.Vector3(pos.y + height, 0, -pos.x - width / 2 - sequenceFlowWidth),
+
+      // western wall
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, sequenceFlowHeight, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, sequenceFlowHeight, -pos.x),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x),
+
+      // eastern wall
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, 0, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 - sequenceFlowWidth, sequenceFlowHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, sequenceFlowHeight, -pos.x - width),
+      new THREE.Vector3(pos.y + height / 2 + sequenceFlowWidth, 0, -pos.x - width)
+
+    ];
+
+    geometry.faces = [
+      // new THREE.Face3(0, 1, 2),
+      // new THREE.Face3(2, 3, 0),
+
       // norhtern wall
       new THREE.Face3(0, 6, 7),
       new THREE.Face3(0, 7, 4),
@@ -215,11 +321,19 @@ function handleTask(scene, element) {
   task.setAttribute('geometry', 'primitive: task; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
   task.setAttribute('material', 'color: #FFFFFF');
   task.setAttribute('model-entity', 'true');
+  task.setAttribute('isTask', 'true');
+
+  const taskWall = document.createElement('a-entity');
+  taskWall.setAttribute('geometry', 'primitive: taskWall; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
+  taskWall.setAttribute('material', 'color: #FFFFFF');
+  taskWall.setAttribute('model-entity', 'true');
+  taskWall.setAttribute('isTaskWall', 'true');
 
   const line = document.createElement('a-entity');
   line.setAttribute('geometry', 'primitive: taskLine; position: ' + (element.x * globalScaleFactor) + ' ' + (element.y * globalScaleFactor)+'; width: '+element.width * globalScaleFactor+'; height: '+element.height * globalScaleFactor+';');
   line.setAttribute('material', 'color: #333333');
   line.setAttribute('model-entity', 'true');
+  line.setAttribute('isTaskLine', 'true');
 
   // text label look-controls
   const name = element.businessObject.name;
@@ -256,6 +370,7 @@ function handleTask(scene, element) {
   }
 
   scene.appendChild(task);
+  scene.appendChild(taskWall);
   scene.appendChild(line);
   scene.appendChild(label);
 
