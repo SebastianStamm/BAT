@@ -5,6 +5,8 @@ document.body.addEventListener('keydown', evt => {
     case '3': return hide('[model-entity],a-image');
     case '4': return show('[isGateway],[isGatewayLine],[model-entity2],[isTask],[isTaskLine],[isSequenceFlow],[isSequenceFlowLine]');
     case '5': return show('[isGatewayWall],[isTaskWall],[isSequenceFlowWall]');
+    case '6': return show('[isDoor]');
+    case '7': return show('[isLabel]');
   }
 });
 
