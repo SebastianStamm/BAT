@@ -152,24 +152,6 @@ function handleModel(viewer) {
   sky.setAttribute('color', '#ECECEC');
   scene.appendChild(sky);
 
-  /*    <a-assets>
-          <a-asset-item id="human-obj" src="/human.obj"></a-asset-item>
-        </a-assets>
-  */
-  const assets = document.createElement('a-assets');
-
-  const humanObj = document.createElement('a-asset-item');
-  humanObj.setAttribute('id', 'human-obj');
-  humanObj.setAttribute('src', './human.obj');
-  assets.appendChild(humanObj);
-
-  const computerObj = document.createElement('a-asset-item');
-  computerObj.setAttribute('id', 'computer-obj');
-  computerObj.setAttribute('src', './computer.obj');
-  assets.appendChild(computerObj);
-
-  scene.appendChild(assets);
-
   let startPosition;
 
   const data = [];
@@ -205,10 +187,10 @@ function handleModel(viewer) {
   // <a-entity camera="userHeight: 1.7" look-controls></a-entity>
   const posOffset = startPosition.width / 2 * globalScaleFactor;
   const camera = document.createElement('a-entity');
-  camera.setAttribute('camera', 'userHeight: 0');
+  camera.setAttribute('camera', 'userHeight: 1.7');
   camera.setAttribute('look-controls', true);
   camera.setAttribute('wasd-controls', 'acceleration: 250');
-  // camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
+  camera.setAttribute('position', (startPosition.y * globalScaleFactor + posOffset) + ' 0 ' + (-startPosition.x * globalScaleFactor - posOffset));
   camera.setAttribute('collision', true);
   scene.appendChild(camera);
 
@@ -227,46 +209,6 @@ function handleModel(viewer) {
   scene.appendChild(directionalLight);
 
   document.querySelector('#vrContent').appendChild(scene);
-
-  // setup mobile cursor
-  if(BATmobile) {
-    /*
-    <a-entity cursor="fuse: true; fuseTimeout: 500"
-          position="0 0 -1"
-          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-          material="color: black; shader: flat">
-    </a-entity>
-    */
-
-    const cursor = document.createElement('a-entity');
-    cursor.setAttribute('position', '0 0 -1');
-    cursor.setAttribute('geometry', 'primitive: ring; radiusInner: 0.02; radiusOuter: 0.03;');
-    cursor.setAttribute('material', 'color: black; shader: flat');
-
-    camera.appendChild(cursor);
-    camera.setAttribute('gaze-control', true);
-
-    // <a-entity raycaster="objects: .collidable" position="0 -0.9 0" rotation="90 0 0"></a-entity>
-    const raycaster = document.createElement('a-entity');
-    raycaster.setAttribute('raycaster', true);
-    raycaster.setAttribute('direction', '0 0 -1');
-
-    camera.appendChild(raycaster);
-  }
-
-  if(BATVR) {
-    const cursor1 = document.createElement('a-entity');
-    cursor1.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; collisionEntities: [model-entity];');
-    cursor1.setAttribute('oculus-touch-controls', 'hand: right');
-
-    scene.appendChild(cursor1);
-
-    const cursor2 = document.createElement('a-entity');
-    cursor2.setAttribute('teleport-controls', 'button: trigger; curveShootingSpeed: 12; collisionEntities: [model-entity];');
-    cursor2.setAttribute('oculus-touch-controls', 'hand: left');
-
-    scene.appendChild(cursor2);
-  }
 
   window.startPosition = startPosition;
   window.BATscene = scene;

@@ -2,7 +2,63 @@
   <head>
     <script src="./bpmn-viewer.js"></script>
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+
+    <style>
+      .content-container {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          transition: 1s;
+          z-index: 10000;
+      }
+      .bjs-powered-by {
+          display: none !important;
+      }
+      .bat-slogan {
+          font-family: 'Press Start 2P', cursive;
+          letter-spacing: .15em;
+          text-shadow: 2px 2px 3px #95151b;
+          color: #b5152b;
+          text-align: center;
+          margin-top: .6em;
+          font-size: 5em;
+          animation: floating-text 2s ease alternate infinite;
+      }
+      @keyframes floating-text {
+        0% {
+          transform: translateY(.1em);
+          text-shadow:0 0 .5em rgba(255,255,255,.4),
+            0 0 .2em rgba(0,0,0,.3),
+            0 .3em .2em rgba(0,0,0,.3);
+        }
+        100% {
+          text-shadow:0 0 .5em rgba(255,255,255,.4),
+            0 0 .2em rgba(0,0,0,.3),
+            0 .5em .5em rgba(0,0,0,.3);
+        }
+      }
+
+      #splashContent .start-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 3em;
+        font-family: 'Press Start 2P', cursive;
+        cursor: pointer;
+        padding: .5em;
+        margin-left: -3em;
+        background-color: limegreen;
+      }
+
+      .cheats-menu {
+        position: absolute;
+        top: 15%;
+        left: 5%;
+        line-height: 1.5em;
+        font-family: "Press Start 2P";
+      }
+  </style>
   </head>
   <body>
     <script type="application/javascript" src="./globals.js"></script>
@@ -11,38 +67,68 @@
     <script type="application/javascript" src="./sequenceFlow.js"></script>
     <script type="application/javascript" src="./task.js"></script>
     <script type="application/javascript" src="./gateway.js"></script>
-    <script type="application/javascript" src="./event.js"></script>
+    <script type="application/javascript" src="./random.js"></script>
+    <script type="application/javascript" src="./presentation.js"></script>
+
+    <div id="vrContent" class="content-container"></div>
+
+    <div id="splashContent" class="content-container" style="background-image: url(img/capture.png); background-size:cover;">
+      <div class="bat-slogan">[Be A Token]</div>
+      <div class="model-preview" style="width: 80vw; height: 80vh; margin-left: 10vw;"></div>
+      <button class="start-button">Start</button>
+      <div class="cheats-menu">
+        <b>Cheats:</b><br /><br />
+        [1]: Enable Flying<br />
+        [2]: Disable Flying<br />
+        [3]: Hide World<br />
+        [4]: Show Floor<br />
+        [5]: Show Walls<br />
+        [6]: Show Doors<br />
+        [7]: Show Labels<br />
+      </div>
+    </div>
+
     <script type="application/javascript">
-    function loadBpmn() {
-      const input = document.createElement('input');
+      document.querySelector('.start-button').addEventListener('click', () => {
+        document.body.removeChild(document.querySelector('#splashContent'));
+      });
 
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', '.bpmn');
+      (async ()=>{
 
-      input.addEventListener('change', evt => {
-        const file = input.files[0];
-        const reader = new FileReader();
+        var BpmnViewer = window.BpmnJS;
 
-        reader.addEventListener('load', e => {
-          var BpmnViewer = window.BpmnJS;
+        var viewer = new BpmnViewer({ container: document.querySelector('.model-preview') });
 
-          var viewer = new BpmnViewer({ container: document.createElement('div') });
+        const xml = await (await fetch('./bat.bpmn')).text();
 
-          viewer.importXML(e.target.result, (err, result) => {
-            handleModel(viewer);
-            document.body.removeChild(splash);
+        viewer.importXML(xml, (err, result) => {
+          function randomize() {
+            const tasks = viewer.get('elementRegistry').filter(el => {
+                return el.businessObject.$instanceOf('bpmn:Task');
+            });
+            tasks.forEach(task => {
+                const bo = task.businessObject;
+                bo.name = getRandomName();
+            });
+          }
+          function getRandomName() {
+              return window.randomVerbs[~~(Math.random() * 100)] + ' ' +
+                window.randomSubjects[~~(Math.random() * 100)];
+          }
+          randomize();
+          handleModel(viewer);
+
+          viewer.get('canvas').zoom('fit-viewport', 'auto');
+          viewer.get('canvas').zoom('fit-viewport', 'auto');
+
+          viewer.saveXML((err, xml) => {
+            viewer.importXML(xml, () => {
+              viewer.get('canvas').zoom('fit-viewport', 'auto');
+              viewer.get('canvas').zoom('fit-viewport', 'auto');
+            });
           });
         });
-
-        reader.readAsText(file);
-      });
-      input.click();
-    }
+      })();
     </script>
-
-    <div style="position:absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #000000" id="splash">
-      <div style="color: #c6caff; text-align: center; font-size: 30em; cursor: pointer;" onClick="loadBpmn()">🦇</div>
-      <div style="color: #c6caff; text-align: center; font-size: 8em; font-family: 'Roboto', sans-serif;">BAT</div>
-    </div>
   </body>
 </html>
